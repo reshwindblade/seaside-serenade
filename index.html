@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sea-Themed Magical Girl Character Sheet</title>
+    <style>
+    :root {
+      --primary-color: #4682B4;
+      --primary-dark: #2f5d82;
+      --primary-light: #6ea6d3;
+      --secondary-color: #87CEEB;
+      --accent-color: #FFD700;
+      --accent-light: #ffe666;
+      --text-color: #2c3e50;
+      --light-color: #f0f8ff;
+      --light-gray: #f5f7fa;
+      --border-color: #b3d4e6;
+      --success-color: #48bb78;
+      --error-color: #e53e3e;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    /* Base Styles */
+    body {
+      font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      color: var(--text-color);
+      background-color: #e6f2fa;
+      background-image: linear-gradient(to bottom, #e6f2fa, #daeaf8);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto 40px;
+      background-color: white;
+      padding: 25px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-top: 0;
+      background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
+      color: white;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.5px;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+
+    h4 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    /* Layout */
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background-color: white;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .section:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -10px;
+      gap: 15px;
+    }
+
+    .col {
+      flex: 1;
+      padding: 0 10px;
+      min-width: 200px;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--primary-color);
+      font-size: 0.95rem;
+    }
+
+    input[type="text"], 
+    input[type="number"], 
+    select, 
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      transition: var(--transition);
+      background-color: var(--light-gray);
+    }
+
+    input[type="text"]:focus, 
+    input[type="number"]:focus, 
+    select:focus, 
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.2);
+      background-color: white;
+    }
+
+    /* Attributes Section */
+    .attributes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .attribute {
+      width: 120px;
+      text-align: center;
+      padding: 10px;
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+    }
+
+    .attribute:hover {
+      background-color: rgba(135, 206, 235, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .attribute-circle {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: bold;
+      background: radial-gradient(circle, rgba(135, 206, 235, 0.7) 0%, rgba(70, 130, 180, 0.9) 100%);
+      color: white;
+      border: 3px solid var(--primary-color);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .attribute:hover .attribute-circle {
+      box-shadow: 0 0 15px rgba(70, 130, 180, 0.4);
+    }
+
+    .attribute-name {
+      font-weight: 600;
+      color: var(--primary-dark);
+      font-size: 1.1rem;
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .skill-category {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 15px;
+      background-color: white;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .skill-category:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .skill-category h3 {
+      text-align: center;
+      margin-top: 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--primary-color);
+    }
+
+    .skill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .skill-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .skill-item:hover {
+      background-color: rgba(135, 206, 235, 0.1);
+    }
+
+    .skill-name {
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    .skill-selection {
+      display: flex;
+      gap: 12px;
+    }
+
+    .custom-checkbox {
+      position: relative;
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+    }
+
+    .custom-checkbox input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30px;
+      height: 30px;
+      background-color: var(--light-gray);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: #bbb;
+      transition: var(--transition);
+    }
+
+    .custom-checkbox:hover .checkmark {
+      background-color: #e0e0e0;
+    }
+
+    .custom-checkbox input:checked ~ .checkmark {
+      background-color: var(--primary-color);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    /* Proficient and Mastered styles */
+    .skill-proficient ~ .checkmark {
+      border-color: #4682B4;
+    }
+
+    .skill-mastered ~ .checkmark {
+      border-color: #9932CC;
+    }
+
+    .skill-proficient:checked ~ .checkmark {
+      background-color: #4682B4;
+      box-shadow: 0 0 8px rgba(70, 130, 180, 0.4);
+    }
+
+    .skill-mastered:checked ~ .checkmark {
+      background-color: #9932CC;
+      box-shadow: 0 0 8px rgba(153, 50, 204, 0.4);
+    }
+
+    .skill-counter {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 20px;
+      font-weight: bold;
+      background-color: var(--light-gray);
+      padding: 10px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    #proficient-count {
+      color: #4682B4;
+    }
+
+    #mastered-count {
+      color: #9932CC;
+    }
+
+    /* Counters (Stress & Harm) */
+    .stress-harm {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .counter {
+      text-align: center;
+      margin: 10px;
+      background-color: white;
+      padding: 15px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      min-width: 200px;
+    }
+
+    .counter-title {
+      font-weight: bold;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .counter-boxes {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .counter-box {
+      width: 35px;
+      height: 35px;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      background-color: white;
+      transition: var(--transition);
+    }
+
+    .counter-box:hover {
+      background-color: rgba(70, 130, 180, 0.1);
+    }
+
+    .counter-box.filled {
+      background-color: var(--primary-color);
+      border-color: var(--primary-dark);
+      box-shadow: 0 0 5px rgba(70, 130, 180, 0.5);
+    }
+
+    /* Talents Section */
+    .talent-section {
+      border: 1px solid var(--accent-color);
+      padding: 18px;
+      margin-top: 20px;
+      border-radius: var(--radius-md);
+      background-color: white;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .talent-section:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--accent-light);
+    }
+
+    .talent-icons {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .talent-name {
+      font-weight: bold;
+      color: var(--primary-dark);
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 5px;
+    }
+
+    .talent-description {
+      font-style: italic;
+      margin-bottom: 12px;
+      color: var(--text-color);
+    }
+
+    .talent-mechanics {
+      background-color: var(--light-gray);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      border-left: 3px solid var(--primary-color);
+    }
+
+    .talent-example {
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #666;
+      margin-top: 10px;
+      padding-left: 15px;
+      border-left: 2px solid var(--border-color);
+    }
+
+    /* Archetype Selection */
+    .archetype-select {
+      margin: 20px 0 30px;
+      padding: 20px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .archetype-button {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 15px;
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .archetype-button:hover {
+      background-color: var(--primary-color);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Weapon Section */
+    .weapon-container {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .weapon-info {
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--accent-color);
+    }
+
+    .weapon-guidance {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-color);
+    }
+
+    .guidance-title {
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 1.15rem;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .weapon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .weapon-category {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 15px;
+      background-color: white;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .weapon-category:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .weapon-category h4 {
+      margin-top: 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--primary-color);
+      text-align: center;
+    }
+
+    .weapon-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .weapon-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 8px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .weapon-option:hover {
+      background-color: var(--light-gray);
+    }
+
+    .weapon-option input[type="radio"] {
+      margin: 0;
+      accent-color: var(--primary-color);
+      width: 18px;
+      height: 18px;
+    }
+
+    .weapon-option label {
+      margin: 0;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-weight: normal;
+    }
+
+    .weapon-option:hover label {
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    .custom-weapon {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+      padding: 20px;
+      background-color: var(--light-gray);
+      border-radius: var(--radius-md);
+      border: 1px dashed var(--border-color);
+    }
+
+    .custom-weapon label {
+      margin: 0;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    #other-weapon-text {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .weapon-description-section {
+      margin-top: 20px;
+    }
+
+    .weapon-description-section label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    #weapon-description {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Checkbox Grid */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .checkbox-grid > div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .checkbox-grid > div:hover {
+      background-color: var(--light-gray);
+    }
+
+    .checkbox-grid input[type="radio"],
+    .checkbox-grid input[type="checkbox"] {
+      accent-color: var(--primary-color);
+      width: 18px;
+      height: 18px;
+    }
+
+    .checkbox-grid label {
+      margin: 0;
+      display: inline;
+      cursor: pointer;
+      font-weight: normal;
+    }
+
+    /* Print Button */
+    .print-button {
+      display: block;
+      margin: 30px auto;
+      padding: 12px 24px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 600;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .print-button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .print-button:active {
+      transform: translateY(0);
+    }
+
+
+    /* Styling for active button state */
+    .archetype-button.active {
+      background-color: var(--primary-color) !important;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Animation for talents section */
+    #talents-container {
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    #talents-container.fade-in {
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Smooth scrolling for the entire page */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Making the talent sections more interactive */
+    .talent-section {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .talent-section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Optional: Add a collapsible functionality to the talents section */
+    .section-collapsible {
+      position: relative;
+    }
+
+    .toggle-button {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      color: var(--primary-color);
+      font-size: 24px;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .toggle-button::before {
+      content: "−";
+    }
+
+    .section-collapsed .toggle-button::before {
+      content: "+";
+    }
+
+    .section-collapsed .section-content {
+      display: none;
+    }
+
+    /* Print Settings */
+    @media print {
+      body {
+        padding: 0;
+        background-color: white;
+      }
+      
+      .container {
+        box-shadow: none;
+        max-width: 100%;
+        padding: 10px;
+      }
+      
+      .archetype-select,
+      .print-button {
+        display: none;
+      }
+      
+      .section,
+      .talent-section,
+      .skill-category,
+      .weapon-category,
+      .counter {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+      
+      h1 {
+        font-size: 24px;
+        padding: 10px;
+      }
+      
+      h2 {
+        font-size: 20px;
+      }
+      
+      h3, h4 {
+        font-size: 16px;
+      }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .attributes {
+        justify-content: center;
+      }
+      
+      .attribute {
+        width: 100px;
+      }
+      
+      .attribute-circle {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .col {
+        flex: 1 0 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+        padding: 15px;
+      }
+      
+      .section {
+        padding: 15px;
+      }
+      
+      .skill-category,
+      .weapon-category {
+        padding: 12px;
+      }
+      
+      .attributes {
+        gap: 10px;
+      }
+      
+      .attribute {
+        width: 90px;
+      }
+      
+      .attribute-circle {
+        width: 70px;
+        height: 70px;
+        font-size: 20px;
+      }
+    }
+    </style>
+</head>
+<body>
+    <body>
+    <div class="container">
+        <h1>Sea-Themed Magical Girl Character Sheet</h1>
+        
+        <div class="archetype-select">
+            <h3>Choose Your Magical Archetype</h3>
+            <button class="archetype-button" data-archetype="tideweaving">Tideweaving</button>
+            <button class="archetype-button" data-archetype="sirensong">Sirensong</button>
+            <button class="archetype-button" data-archetype="deepcalling">Deepcalling</button>
+            <button class="archetype-button" data-archetype="coralcraft">Coralcraft</button>
+            <button class="archetype-button" data-archetype="luminary">Luminary</button>
+            <button class="archetype-button" data-archetype="frostflow">Frostflow</button>
+            <button class="archetype-button" data-archetype="tempestcalling">Tempestcalling</button>
+            <button class="archetype-button" data-archetype="pearlheart">Pearlheart</button>
+        </div>
+        
+        <div class="section">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="character-name">Character Name:</label>
+                        <input type="text" id="character-name" name="character-name">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="magical-name">Magical Name:</label>
+                        <input type="text" id="magical-name" name="magical-name">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="signature-color">Signature Color:</label>
+                        <input type="text" id="signature-color" name="signature-color">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="animal-spirit">Animal Spirit:</label>
+                        <input type="text" id="animal-spirit" name="animal-spirit">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="transformation-phrase">Transformation Phrase:</label>
+                        <input type="text" id="transformation-phrase" name="transformation-phrase">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Attributes</h2>
+            <p>Distribute 45 points among the five Attributes. No Attribute can start higher than 12 or lower than 6.</p>
+            <div class="attributes">
+                <div class="attribute">
+                    <div class="attribute-circle">
+                        <input type="number" id="focus" name="focus" min="6" max="12" value="6" style="width: 40px; text-align: center; border: none; background: transparent; color: white;">
+                    </div>
+                    <div class="attribute-name">Focus</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-circle">
+                        <input type="number" id="daring" name="daring" min="6" max="12" value="6" style="width: 40px; text-align: center; border: none; background: transparent; color: white;">
+                    </div>
+                    <div class="attribute-name">Daring</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-circle">
+                        <input type="number" id="insight" name="insight" min="6" max="12" value="6" style="width: 40px; text-align: center; border: none; background: transparent; color: white;">
+                    </div>
+                    <div class="attribute-name">Insight</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-circle">
+                        <input type="number" id="presence" name="presence" min="6" max="12" value="6" style="width: 40px; text-align: center; border: none; background: transparent; color: white;">
+                    </div>
+                    <div class="attribute-name">Presence</div>
+                </div>
+                <div class="attribute">
+                    <div class="attribute-circle">
+                        <input type="number" id="might" name="might" min="6" max="12" value="6" style="width: 40px; text-align: center; border: none; background: transparent; color: white;">
+                    </div>
+                    <div class="attribute-name">Might</div>
+                </div>
+            </div>
+            <div id="points-remaining" style="text-align: center; margin-top: 10px; font-weight: bold;">Points Remaining: 15</div>
+        </div>
+        
+        <div class="section">
+            <h2>Skills</h2>
+            <p>Select 5 skills to be Proficient (Critical Range 1-3).<br>
+            Choose 2 of those skills to be Mastered (Critical Range 1-5).</p>
+            
+            <div class="skills-grid">
+                <!-- Focus Skills -->
+                <div class="skill-category">
+                    <h3>Focus</h3>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Spellcasting</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="spellcasting">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="spellcasting">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Ritual</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="ritual">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="ritual">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Fine Control</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="fine-control">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="fine-control">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Analysis</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="analysis">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="analysis">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Willpower</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="willpower">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="willpower">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Daring Skills -->
+                <div class="skill-category">
+                    <h3>Daring</h3>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Acrobatics</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="acrobatics">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="acrobatics">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Movement</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="movement">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="movement">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Courage</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="courage">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="courage">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Insight Skills -->
+                <div class="skill-category">
+                    <h3>Insight</h3>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Observation</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="observation">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="observation">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Instinct</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="instinct">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="instinct">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Empathy</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="empathy">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="empathy">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Strategy</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="strategy">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="strategy">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Presence Skills -->
+                <div class="skill-category">
+                    <h3>Presence</h3>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Persuasion</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="persuasion">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="persuasion">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Command</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="command">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="command">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Performance</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="performance">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="performance">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Inspiration</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="inspiration">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="inspiration">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Diplomacy</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="diplomacy">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="diplomacy">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Might Skills -->
+                <div class="skill-category">
+                    <h3>Might</h3>
+                    <div class="skill-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Breaking</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="breaking">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="breaking">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Close Combat</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="close-combat">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="close-combat">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Endurance</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="endurance">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="endurance">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Lifting</span>
+                            <div class="skill-selection">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-proficient" data-skill="lifting">
+                                    <span class="checkmark">P</span>
+                                </label>
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" class="skill-mastered" data-skill="lifting">
+                                    <span class="checkmark">M</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="skill-counter">
+                <div id="proficient-count">Proficient: 0/5</div>
+                <div id="mastered-count">Mastered: 0/2</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="row">
+                <div class="col">
+                    <h2>Defenses</h2>
+                    <div class="form-group">
+                        <label for="physical-defense">Physical Defense:</label>
+                        <input type="text" id="physical-defense" name="physical-defense" readonly>
+                        <small>Equals (Daring + Might)/2</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="magical-defense">Magical Defense:</label>
+                        <input type="text" id="magical-defense" name="magical-defense" readonly>
+                        <small>Equals (Focus + Insight + Presence)/3</small>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <h2>Stress & Harm</h2>
+                    <div class="stress-harm">
+                        <div class="counter">
+                            <div class="counter-title">Stress</div>
+                            <div class="counter-boxes" id="stress-boxes">
+                                <!-- Boxes added by JS -->
+                            </div>
+                            <small>Equals (Insight OR Focus)/2</small>
+                        </div>
+                        
+                        <div class="counter">
+                            <div class="counter-title">Harm</div>
+                            <div class="counter-boxes" id="harm-boxes">
+                                <!-- Boxes added by JS -->
+                            </div>
+                            <small>Equals (Might OR Daring)/2</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" id="talents-section">
+            <h2>Talents</h2>
+            <div id="talents-container">
+                <!-- Talent content will be loaded here based on selection -->
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Transformation Device</h2>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="device-type">Device Type:</label>
+                        <select id="device-type" name="device-type">
+                            <option value="necklace">Necklace</option>
+                            <option value="ring">Ring</option>
+                            <option value="compact-mirror">Compact Mirror</option>
+                            <option value="smartwatch">Smartwatch</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="device-appearance">Appearance Description:</label>
+                        <textarea id="device-appearance" name="device-appearance" rows="3"></textarea>
+                    </div>
+                </div>
+                
+                <div class="col">
+                    <div class="form-group">
+                        <label for="activation-method">Activation Method:</label>
+                        <select id="activation-method" name="activation-method">
+                            <option value="gesture">Gesture</option>
+                            <option value="phrase">Phrase</option>
+                            <option value="animation">Animation</option>
+                            <option value="light-effect">Light Effect</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="additional-features">Additional Features (Choose 1):</label>
+                        <div class="checkbox-grid">
+                            <div>
+                                <input type="radio" name="additional-features" id="intricate-design" value="intricate-design">
+                                <label for="intricate-design">Intricate Design</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="additional-features" id="bioluminescent-glow" value="bioluminescent-glow">
+                                <label for="bioluminescent-glow">Bioluminescent Glow</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="additional-features" id="elemental-theming" value="elemental-theming">
+                                <label for="elemental-theming">Elemental Theming</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="additional-features" id="floating-effect" value="floating-effect">
+                                <label for="floating-effect">Floating Effect</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="additional-features" id="shapeshifting-aesthetic" value="shapeshifting-aesthetic">
+                                <label for="shapeshifting-aesthetic">Shapeshifting Aesthetic</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Functional Enhancements (Choose 2):</label>
+                <div class="checkbox-grid">
+                    <div>
+                        <input type="checkbox" name="functional-enhancements" id="dual-form" value="dual-form" class="functional-enhancement">
+                        <label for="dual-form">Dual Form</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="functional-enhancements" id="holographic-display" value="holographic-display" class="functional-enhancement">
+                        <label for="holographic-display">Holographic Display</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="functional-enhancements" id="instant-recall" value="instant-recall" class="functional-enhancement">
+                        <label for="instant-recall">Instant Recall</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="functional-enhancements" id="hidden-form" value="hidden-form" class="functional-enhancement">
+                        <label for="hidden-form">Hidden Form</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="functional-enhancements" id="instant-wardrobe" value="instant-wardrobe" class="functional-enhancement">
+                        <label for="instant-wardrobe">Instant Wardrobe Change</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="functional-enhancements" id="voice-modulation" value="voice-modulation" class="functional-enhancement">
+                        <label for="voice-modulation">Voice Modulation</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="functional-enhancements" id="cloaking-mode" value="cloaking-mode" class="functional-enhancement">
+                        <label for="cloaking-mode">Cloaking Mode</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Power-Boosting Enhancements (Choose 1):</label>
+                <div class="checkbox-grid">
+                    <div>
+                        <input type="radio" name="power-boosting" id="emergency-charge" value="emergency-charge">
+                        <label for="emergency-charge">Emergency Charge</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="power-boosting" id="spell-focus" value="spell-focus">
+                        <label for="spell-focus">Spell Focus</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="power-boosting" id="soulbound" value="soulbound">
+                        <label for="soulbound">Soulbound</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="spirit-connection">Connection to Animal Spirit:</label>
+                <textarea id="spirit-connection" name="spirit-connection" rows="3" placeholder="How does your Animal Spirit interact with the device?"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Unique Magical Effects (Choose 1):</label>
+                <div class="checkbox-grid">
+                    <div>
+                        <input type="radio" name="magical-effects" id="quick-costume" value="quick-costume">
+                        <label for="quick-costume">Quick Costume Swap</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="magical-effects" id="weapon-manifestation" value="weapon-manifestation">
+                        <label for="weapon-manifestation">Magical Weapon Manifestation</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="magical-effects" id="temporary-flight" value="temporary-flight">
+                        <label for="temporary-flight">Temporary Flight</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="magical-effects" id="illusion-projection" value="illusion-projection">
+                        <label for="illusion-projection">Illusion Projection</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="magical-effects" id="dimensional-pocket" value="dimensional-pocket">
+                        <label for="dimensional-pocket">Dimensional Pocket</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+        <h2>Weapon</h2>
+            <div class="weapon-container">
+                <div class="weapon-info">
+                    <h3>Choose Your Weapon</h3>
+                    <p class="weapon-guidance">
+                        <span class="guidance-title">🎭 CHOOSING YOUR WEAPON</span>
+                        <br>Think about your fighting style: Do you prefer agility, power, or long-range combat?
+                        <br>Match your magic: A Sirensong user might wield a harp or tuning fork staff, while a Tempestcaller might prefer a spear or chakrams.
+                        <br>Personalize it: Add engravings, elements, or a magical effect to make it uniquely yours!
+                    </p>
+                </div>
+                
+                <div class="weapon-grid">
+                    <div class="weapon-category">
+                        <h4>Melee Weapons</h4>
+                        <div class="weapon-options">
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="coral-saber" value="coral-saber">
+                                <label for="coral-saber">Coral Saber</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="tidal-scythe" value="tidal-scythe">
+                                <label for="tidal-scythe">Tidal Scythe</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="wave-dagger" value="wave-dagger">
+                                <label for="wave-dagger">Wave Dagger</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="shellclaw-gauntlets" value="shellclaw-gauntlets">
+                                <label for="shellclaw-gauntlets">Shellclaw Gauntlets</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="abyssal-anchor" value="abyssal-anchor">
+                                <label for="abyssal-anchor">Abyssal Anchor</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="bubble-mace" value="bubble-mace">
+                                <label for="bubble-mace">Bubble Mace</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="coral-club" value="coral-club">
+                                <label for="coral-club">Coral Club</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weapon-category">
+                        <h4>Polearms</h4>
+                        <div class="weapon-options">
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="wavecaller-spear" value="wavecaller-spear">
+                                <label for="wavecaller-spear">Wavecaller Spear</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="serpent-pike" value="serpent-pike">
+                                <label for="serpent-pike">Serpent Pike</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="stormcaller-halberd" value="stormcaller-halberd">
+                                <label for="stormcaller-halberd">Stormcaller Halberd</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="driftwood-staff" value="driftwood-staff">
+                                <label for="driftwood-staff">Driftwood Staff</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="tuning-fork-staff" value="tuning-fork-staff">
+                                <label for="tuning-fork-staff">Tuning Fork Staff</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weapon-category">
+                        <h4>Ranged Weapons</h4>
+                        <div class="weapon-options">
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="tide-rifle" value="tide-rifle">
+                                <label for="tide-rifle">Tide Rifle</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="hydro-pistol" value="hydro-pistol">
+                                <label for="hydro-pistol">Hydro Pistol</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="lightning-chakrams" value="lightning-chakrams">
+                                <label for="lightning-chakrams">Lightning Chakrams</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weapon-category">
+                        <h4>Special Weapons</h4>
+                        <div class="weapon-options">
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="current-coil-whip" value="current-coil-whip">
+                                <label for="current-coil-whip">Current Coil Whip</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="wavebreaker-shield" value="wavebreaker-shield">
+                                <label for="wavebreaker-shield">Wavebreaker Shield</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="sirens-harp" value="sirens-harp">
+                                <label for="sirens-harp">Siren's Harp</label>
+                            </div>
+                            <div class="weapon-option">
+                                <input type="radio" name="weapon-type" id="seashell-fan" value="seashell-fan">
+                                <label for="seashell-fan">Seashell Fan</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="custom-weapon">
+                    <input type="radio" name="weapon-type" id="other-weapon" value="other-weapon">
+                    <label for="other-weapon">Other Weapon</label>
+                    <input type="text" id="other-weapon-text" placeholder="Describe your custom weapon" style="width: 100%; margin-top: 5px;">
+                </div>
+                
+                <div class="weapon-description-section">
+                    <label for="weapon-description">Weapon Customization:</label>
+                    <textarea id="weapon-description" rows="3" placeholder="Describe how your weapon looks, special features, and magical properties..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    // JavaScript for improved skill selection
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize with general talents
+    loadTalents('general');
+    
+    // Set up archetype buttons
+    const archetypeButtons = document.querySelectorAll('.archetype-button');
+    archetypeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const archetype = this.getAttribute('data-archetype');
+            loadTalents(archetype);
+            
+            // Visual feedback for selected button
+            archetypeButtons.forEach(btn => btn.style.backgroundColor = '');
+            this.style.backgroundColor = 'var(--primary-color)';
+        });
+    });
+    
+    // Create stress and harm boxes
+    function createCounterBoxes(id, count) {
+        const container = document.getElementById(id);
+        container.innerHTML = '';
+        
+        for (let i = 0; i < count; i++) {
+            const box = document.createElement('div');
+            box.className = 'counter-box';
+            box.addEventListener('click', function() {
+                this.classList.toggle('filled');
+            });
+            container.appendChild(box);
+        }
+    }
+    
+    // Initialize with 5 boxes
+    createCounterBoxes('stress-boxes', 5);
+    createCounterBoxes('harm-boxes', 5);
+    
+    // Calculate stress and harm based on attributes
+    function updateDerivedStats() {
+        const focus = parseInt(document.getElementById('focus').value) || 0;
+        const insight = parseInt(document.getElementById('insight').value) || 0;
+        const daring = parseInt(document.getElementById('daring').value) || 0;
+        const might = parseInt(document.getElementById('might').value) || 0;
+        const presence = parseInt(document.getElementById('presence').value) || 0;
+        
+        // Calculate stress (Insight OR Focus)/2
+        const stress = Math.floor(Math.max(insight, focus) / 2);
+        createCounterBoxes('stress-boxes', stress);
+        
+        // Calculate harm (Might OR Daring)/2
+        const harm = Math.floor(Math.max(might, daring) / 2);
+        createCounterBoxes('harm-boxes', harm);
+        
+        // Calculate defenses
+        const physicalDefense = ((daring + might) / 2).toFixed(1);
+        document.getElementById('physical-defense').value = physicalDefense;
+        
+        const magicalDefense = ((focus + insight + presence) / 3).toFixed(1);
+        document.getElementById('magical-defense').value = magicalDefense;
+    }
+    
+    // Track attribute points
+    const attributes = ['focus', 'daring', 'insight', 'presence', 'might'];
+    const attributeMax = 45;
+    
+    attributes.forEach(attr => {
+        const input = document.getElementById(attr);
+        input.addEventListener('change', function() {
+            let value = parseInt(this.value) || 0;
+            
+            // Enforce min/max
+            if (value < 6) value = 6;
+            if (value > 12) value = 12;
+            this.value = value;
+            
+            // Recalculate total
+            let total = 0;
+            attributes.forEach(a => {
+                total += parseInt(document.getElementById(a).value) || 0;
+            });
+            
+            // Check if over the limit
+            if (total > attributeMax) {
+                this.value = value - (total - attributeMax);
+            }
+            
+            // Update points remaining
+            total = 0;
+            attributes.forEach(a => {
+                total += parseInt(document.getElementById(a).value) || 0;
+            });
+            
+            document.getElementById('points-remaining').textContent = `Points Remaining: ${attributeMax - total}`;
+            
+            // Update stress, harm, and defenses
+            updateDerivedStats();
+        });
+    });
+    
+    // Improved skill selection handling
+    const proficientSkills = document.querySelectorAll('.skill-proficient');
+    const masteredSkills = document.querySelectorAll('.skill-mastered');
+    let proficientCount = 0;
+    let masteredCount = 0;
+    
+    proficientSkills.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const skillName = this.getAttribute('data-skill');
+            const masteredCheckbox = document.querySelector(`.skill-mastered[data-skill="${skillName}"]`);
+            
+            if (this.checked) {
+                proficientCount++;
+                if (proficientCount > 5) {
+                    this.checked = false;
+                    proficientCount--;
+                    alert('You can only select 5 proficient skills.');
+                }
+            } else {
+                proficientCount--;
+                // If unchecking a proficient skill, also uncheck the mastered version
+                if (masteredCheckbox.checked) {
+                    masteredCheckbox.checked = false;
+                    masteredCount--;
+                    updateMasteredCounter();
+                }
+            }
+            updateProficientCounter();
+        });
+    });
+    
+    masteredSkills.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const skillName = this.getAttribute('data-skill');
+            const proficientCheckbox = document.querySelector(`.skill-proficient[data-skill="${skillName}"]`);
+            
+            if (this.checked) {
+                // Must be proficient to be mastered
+                if (!proficientCheckbox.checked) {
+                    proficientCheckbox.checked = true;
+                    proficientCount++;
+                    if (proficientCount > 5) {
+                        proficientCheckbox.checked = false;
+                        proficientCount--;
+                        this.checked = false;
+                        alert('You can only select 5 proficient skills, and a skill must be proficient before it can be mastered.');
+                        return;
+                    }
+                    updateProficientCounter();
+                }
+                
+                masteredCount++;
+                if (masteredCount > 2) {
+                    this.checked = false;
+                    masteredCount--;
+                    alert('You can only select 2 mastered skills.');
+                }
+            } else {
+                masteredCount--;
+            }
+            updateMasteredCounter();
+        });
+    });
+    
+    function updateProficientCounter() {
+        document.getElementById('proficient-count').textContent = `Proficient: ${proficientCount}/5`;
+    }
+    
+    function updateMasteredCounter() {
+        document.getElementById('mastered-count').textContent = `Mastered: ${masteredCount}/2`;
+    }
+    
+    // Track functional enhancements (limited to 2)
+    const functionalEnhancements = document.querySelectorAll('.functional-enhancement');
+    functionalEnhancements.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checked = document.querySelectorAll('.functional-enhancement:checked');
+            if (checked.length > 2) {
+                this.checked = false;
+                alert('You can only select 2 functional enhancements.');
+            }
+        });
+    });
+    
+    // Special handling for the "Other" weapon field
+    const otherWeaponField = document.getElementById('other-weapon-text');
+    otherWeaponField.style.display = 'none';
+    
+    document.getElementById('other-weapon').addEventListener('change', function() {
+        if (this.checked) {
+            otherWeaponField.style.display = 'block';
+        } else {
+            otherWeaponField.style.display = 'none';
+        }
+    });
+    
+    // Initialize attributes to starting values
+    attributes.forEach(attr => {
+        document.getElementById(attr).value = 6;
+    });
+    document.getElementById('points-remaining').textContent = `Points Remaining: ${attributeMax - 30}`;
+    
+    // Initialize defenses
+    updateDerivedStats();
+    
+    // Print button
+    document.querySelector('.print-button').addEventListener('click', function() {
+        window.print();
+    });
+});
+
+// This script handles showing/hiding talent content when clicking on Magical Archetype buttons
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all archetype buttons and the talents container
+    const archetypeButtons = document.querySelectorAll('.archetype-button');
+    const talentsContainer = document.getElementById('talents-container');
+    
+    // Initially hide the talents section
+    document.getElementById('talents-section').style.display = 'block';
+    
+    // Talent data for different archetypes - this could be moved to a separate file if needed
+    const talentData = {
+        general: {
+            title: "General Talents",
+            description: "These talents are accessible to all magical girls with a sea theme. They can be used without transforming as long as you have access to your Transformation Device.",
+            talents: [
+                {
+                    name: "REJUVENATING WATERS",
+                    icons: "🫗",
+                    type: "SUPPORT/HEALING",
+                    effect: "Create a sphere of healing water to mend wounds and restore energy.",
+                    mechanics: "Spend 2 Momentum; roll PRESENCE. Each success restores 1 STRESS to an ally, or 3 success for 1 HARM.",
+                    example: "A magical girl summons a soothing orb of water to refresh a teammate mid-battle."
+                },
+                {
+                    name: "MAGICAL GIRL FORM",
+                    icons: "✨",
+                    type: "TRANSFORMATION",
+                    effect: "Transform into your magical girl form, unlocking enhanced powers and abilities.",
+                    mechanics: "Spend 1 Momentum to transform.",
+                    example: "With a flash of light and a cry of 'Waves of Harmony' the magical girl ascends into her full form."
+                },
+                {
+                    name: "PURIFYING CASCADE",
+                    icons: "♒",
+                    type: "CLEANSE CORRUPTION",
+                    effect: "Use purifying water magic to remove Abyssal corruption from an ally or an area.",
+                    mechanics: "Roll PRESENCE; each success removes 1 Corruption Point from a target or location.",
+                    example: "A shimmering cascade of water flows over an ally, freeing them from the Abyssal Song's grip."
+                },
+                {
+                    name: "MERMAID FORM",
+                    icons: "🧜‍♀️",
+                    type: "TRANSFORMATION",
+                    effect: "Transform into a mermaid, gaining unique movement abilities and underwater advantages.",
+                    mechanics: "Roll FOCUS to shift into your mermaid form and back with success allows for the magical girl's legs transform into a shimmering tail, enabling swift travel through the ocean or return back to human form.",
+                    example: ""
+                },
+                {
+                    name: "TIDAL COMMUNICATION",
+                    icons: "🌊",
+                    type: "UTILITY",
+                    effect: "Use your magical affinity to understand and communicate with ocean life.",
+                    mechanics: "Roll INSIGHT; each success provides information, guidance, or minor aid from a sea creature.",
+                    example: "A dolphin conveys the location of a hidden treasure, or a school of fish points out a lurking Abyssal foe."
+                },
+                {
+                    name: "OCEAN'S VOICE",
+                    icons: "🌊",
+                    type: "COMMUNICATION",
+                    effect: "Communicate with Shireefa",
+                    mechanics: "Spend 1 Momentum or Roll INSIGHT. Each success allows for clearer communication or gains a piece of information, guidance, or aid from Shireefa.",
+                    example: ""
+                },
+                {
+                    name: "COMMUNICATOR",
+                    icons: "📲",
+                    type: "UTILITY",
+                    effect: "Use your Transformation Device as a Handphone",
+                    mechanics: "Use your Transformation Device as a Handphone to talk to your other allies even when they are on other planes of existence (unless blocked by magic).",
+                    example: ""
+                }
+            ]
+        },
+        tideweaving: {
+            title: "Tideweaving (Water Control)",
+            icons: "🌊",
+            description: "Manipulate water to create waves, currents, shields, and restorative magic.",
+            talents: [
+                {
+                    name: "Rejuvenating Waters",
+                    type: "Support/Healing",
+                    effect: "Create a rejuvenating sphere of water to heal allies.",
+                    mechanics: "Spend 2 Momentum; roll Presence to restore 2 Stress per success.",
+                    example: "Summon a gentle rainstorm to rejuvenate the team."
+                },
+                {
+                    name: "Water Barrier",
+                    type: "Defense",
+                    effect: "Raise a water barrier to block attacks.",
+                    mechanics: "Roll Focus; each success blocks 1 damage.",
+                    example: "A towering wave shields the party from an explosion."
+                },
+                {
+                    name: "Tidal Wave",
+                    type: "Attack",
+                    effect: "Summon a tidal wave to knock enemies prone.",
+                    mechanics: "Roll Daring; each success deals 1 damage and forces enemies back.",
+                    example: "A concentrated jet of water strikes with precision."
+                },
+                {
+                    name: "Water Propulsion",
+                    type: "Utility",
+                    effect: "Propel objects or allies across challenging terrain.",
+                    mechanics: "Roll Insight to overcome obstacles.",
+                    example: "Carry supplies across a flood using water currents."
+                },
+                {
+                    name: "Water Dance",
+                    type: "Roleplaying",
+                    effect: "Impress or inspire using water manipulation.",
+                    mechanics: "",
+                    example: "Perform a mesmerizing water dance to raise morale."
+                }
+            ]
+        },
+        sirensong: {
+            title: "Sirensong (Enchanting Voice)",
+            icons: "🎶",
+            description: "Harness the magic of your voice to influence emotions and minds.",
+            talents: [
+                {
+                    name: "Inspiring Melody",
+                    type: "Support",
+                    effect: "Calm panicked allies or inspire bravery.",
+                    mechanics: "Spend 1 Momentum; roll Presence to boost an ally's roll by 1 die for 2 turns or 2 rolls.",
+                    example: "A soothing melody strengthens the team's resolve."
+                },
+                {
+                    name: "Hypnotic Song",
+                    type: "Defense",
+                    effect: "Disorient enemies with hypnotic songs.",
+                    mechanics: "Roll Presence; each success reduces enemy attack rolls by 1 die.",
+                    example: "A haunting lullaby makes foes hesitate."
+                },
+                {
+                    name: "Sonic Blast",
+                    type: "Attack",
+                    effect: "Release a sonic blast to harm enemies.",
+                    mechanics: "Roll Presence; deal 2 damage to all enemies in a small area.",
+                    example: "A sharp crescendo disrupts and scatters a group of Abyssal creatures."
+                },
+                {
+                    name: "Charm Song",
+                    type: "Utility",
+                    effect: "Charm or influence NPCs.",
+                    mechanics: "Roll Presence; each success gains cooperation or reveals secrets.",
+                    example: "Sing a song that compels honesty."
+                },
+                {
+                    name: "Emotional Melody",
+                    type: "Roleplaying",
+                    effect: "Use music to connect emotionally.",
+                    mechanics: "",
+                    example: "Play a familiar tune to soothe an estranged ally."
+                }
+            ]
+        },
+        deepcalling: {
+            title: "Deepcalling (Summoning)",
+            icons: "🐙",
+            description: "Call upon sea creatures to aid in combat or utility.",
+            talents: [
+                {
+                    name: "Guardian Summons",
+                    type: "Support",
+                    effect: "Summon creatures to shield allies.",
+                    mechanics: "Spend 2 Momentum; roll Focus to summon guardians.",
+                    example: "Glowing jellyfish form a barrier around the party."
+                },
+                {
+                    name: "Creature Command",
+                    type: "Attack",
+                    effect: "Command summoned creatures to attack.",
+                    mechanics: "Roll Daring; each success deals 2 damage.",
+                    example: "Sharks leap from the water to strike enemies."
+                },
+                {
+                    name: "Creature Scouts",
+                    type: "Utility",
+                    effect: "Use creatures for scouting or transporting objects.",
+                    mechanics: "Roll Insight to retrieve lost items or navigate.",
+                    example: "Dolphins carry supplies to a stranded villager."
+                },
+                {
+                    name: "Entangling Tentacles",
+                    type: "Defense",
+                    effect: "Summon sea creatures to entangle or block enemies.",
+                    mechanics: "Roll Focus; successes immobilize foes.",
+                    example: "Octopus tentacles trap a charging enemy."
+                },
+                {
+                    name: "Creature Bond",
+                    type: "Roleplaying",
+                    effect: "Bond with summoned creatures to earn trust.",
+                    mechanics: "",
+                    example: "Befriend a mythical sea creature to gain its loyalty."
+                }
+            ]
+        },
+        coralcraft: {
+            title: "Coralcraft (Geomancy)",
+            icons: "🪸",
+            description: "Control coral, shells, and underwater flora to create barriers or weapons.",
+            talents: [
+                {
+                    name: "Healing Coral",
+                    type: "Support",
+                    effect: "Grow healing coral beds to restore energy.",
+                    mechanics: "Spend 2 Momentum; roll Focus to heal all allies in range by 2 Harm each success.",
+                    example: "Coral spores release soothing energy to mend wounds."
+                },
+                {
+                    name: "Coral Shards",
+                    type: "Attack",
+                    effect: "Launch spiked coral projectiles.",
+                    mechanics: "Roll Daring; each success deals 2 damage.",
+                    example: "Razor-sharp coral shards pierce an enemy's defenses."
+                },
+                {
+                    name: "Coral Shield",
+                    type: "Defense",
+                    effect: "Raise coral shields to block attacks.",
+                    mechanics: "Roll Focus; each success blocks 2 damage.",
+                    example: "A coral wall erupts to protect the team."
+                },
+                {
+                    name: "Coral Construction",
+                    type: "Utility",
+                    effect: "Build structures like bridges or barriers.",
+                    mechanics: "Roll Insight to create terrain advantages.",
+                    example: "A coral staircase leads over a cliff."
+                },
+                {
+                    name: "Coral Crafting",
+                    type: "Roleplaying",
+                    effect: "Craft with coral to inspire or aid others.",
+                    mechanics: "",
+                    example: "Gift a decorative coral talisman to an NPC."
+                }
+            ]
+        },
+        luminary: {
+            title: "Luminary (Light and Illusion Magic)",
+            icons: "💡",
+            description: "Control light and bioluminescence to dazzle and deceive.",
+            talents: [
+                {
+                    name: "Healing Light",
+                    type: "Support",
+                    effect: "Heal allies with soothing light.",
+                    mechanics: "Spend 1 Momentum; roll Focus to restore 3 Stress per success.",
+                    example: "A soft glow surrounds and calms the injured."
+                },
+                {
+                    name: "Light Beam",
+                    type: "Attack",
+                    effect: "Focus light beams to damage enemies.",
+                    mechanics: "Roll Daring; each success deals 2 damage.",
+                    example: "A concentrated light beam scorches foes."
+                },
+                {
+                    name: "Blinding Flash",
+                    type: "Defense",
+                    effect: "Dazzle enemies with bursts of light.",
+                    mechanics: "Roll Focus; each success reduces enemy rolls by 1 die.",
+                    example: "A flash of bioluminescence blinds a charging creature."
+                },
+                {
+                    name: "Illusion Craft",
+                    type: "Utility",
+                    effect: "Craft illusions to deceive or distract.",
+                    mechanics: "Roll Insight to alter perception.",
+                    example: "Create a mirage of reinforcements."
+                },
+                {
+                    name: "Light Show",
+                    type: "Roleplaying",
+                    effect: "Use light to inspire or impress.",
+                    mechanics: "",
+                    example: "Illuminate a celebration with a magical light display."
+                }
+            ]
+        },
+        frostflow: {
+            title: "Frostflow (Ice Magic)",
+            icons: "❄️",
+            description: "Harness the freezing power of water for icy attacks and defenses.",
+            talents: [
+                {
+                    name: "Frost Healing",
+                    type: "Support",
+                    effect: "Freeze wounds to stop bleeding.",
+                    mechanics: "Spend 1 Momentum; roll Focus to stabilize injured allies and Heal 3 stress.",
+                    example: "Cool mist envelops and seals wounds."
+                },
+                {
+                    name: "Ice Shards",
+                    type: "Attack",
+                    effect: "Fire ice shards at enemies.",
+                    mechanics: "Roll Daring; each success deals 2 damage.",
+                    example: "Jagged icicles pierce through armor."
+                },
+                {
+                    name: "Ice Wall",
+                    type: "Defense",
+                    effect: "Form ice walls to block attacks.",
+                    mechanics: "Roll Focus; each success absorbs 2 damage.",
+                    example: "A shimmering ice barrier shields the party."
+                },
+                {
+                    name: "Freeze Path",
+                    type: "Utility",
+                    effect: "Freeze water to create paths or obstacles.",
+                    mechanics: "Roll Insight to shape ice.",
+                    example: "Freeze a river to create a solid bridge."
+                },
+                {
+                    name: "Ice Sculpture",
+                    type: "Roleplaying",
+                    effect: "Use frost for symbolic gestures.",
+                    mechanics: "",
+                    example: "Create a delicate ice sculpture as a gift."
+                }
+            ]
+        },
+        tempestcalling: {
+            title: "Tempestcalling (Weather and Storm Magic)",
+            icons: "⚡",
+            description: "Summon storms, wind, and lightning to dominate the battlefield.",
+            talents: [
+                {
+                    name: "Healing Rain",
+                    type: "Support",
+                    effect: "Summon rain to heal allies.",
+                    mechanics: "Spend 2 Momentum; roll Focus to restore 3 Stress to all nearby allies.",
+                    example: "A soft drizzle rejuvenates the team."
+                },
+                {
+                    name: "Lightning Strike",
+                    type: "Attack",
+                    effect: "Call down lightning strikes.",
+                    mechanics: "Roll Daring; each success deals 4 damage to a single target.",
+                    example: "A bolt of lightning strikes an Abyssal creature."
+                },
+                {
+                    name: "Obscuring Fog",
+                    type: "Defense",
+                    effect: "Summon fog to obscure enemies.",
+                    mechanics: "Roll Focus; each success reduce enemy roll by 1 die.",
+                    example: "A thick mist confuses attackers."
+                },
+                {
+                    name: "Wind Control",
+                    type: "Utility",
+                    effect: "Use wind to manipulate objects or terrain.",
+                    mechanics: "Roll Insight for tactical advantages.",
+                    example: "Strong gusts scatter debris blocking the path."
+                },
+                {
+                    name: "Weather Influence",
+                    type: "Roleplaying",
+                    effect: "Use weather for atmosphere or interaction.",
+                    mechanics: "",
+                    example: "Create a warm breeze to comfort an anxious NPC."
+                }
+            ]
+        },
+        pearlheart: {
+            title: "Pearlheart (Emotion Manipulation)",
+            icons: "🐚",
+            description: "Amplify emotions and foresee distant events with enchanted pearls.",
+            talents: [
+                {
+                    name: "Emotional Amplification",
+                    type: "Support",
+                    effect: "Amplify positive emotions to inspire allies.",
+                    mechanics: "Spend 1 Momentum; roll Presence to boost morale.",
+                    example: "A glowing pearl radiates hope."
+                },
+                {
+                    name: "Doubt Wave",
+                    type: "Attack",
+                    effect: "Instill doubt in enemies.",
+                    mechanics: "Roll Presence; each success deals 1 damage",
+                    example: "A pearl emits a wave of despair, weakening resolve."
+                },
+                {
+                    name: "Foresight",
+                    type: "Defense",
+                    effect: "Predict enemy actions to counter them.",
+                    mechanics: "Roll Insight; successes grant bonuses to ally Magical and Physical Defense rolls by 3 or reduce enemy rolls by 1 die.",
+                    example: "Foresee and deflect a sneak attack."
+                },
+                {
+                    name: "Aura Sensing",
+                    type: "Utility",
+                    effect: "Sense hidden objects or dangers.",
+                    mechanics: "Roll Focus for detection.",
+                    example: "Locate a lost artifact by sensing its aura."
+                },
+                {
+                    name: "Memory Pearl",
+                    type: "Roleplaying",
+                    effect: "Use pearls to connect with others.",
+                    mechanics: "",
+                    example: "Project a memory to inspire an NPC."
+                }
+            ]
+        }
+    };
+
+    // Function to load talents based on archetype selection
+    function loadTalents(archetype, shouldScroll = false) {
+        // First, make the talents section visible
+        document.getElementById('talents-section').style.display = 'block';
+        
+        // Only scroll if shouldScroll is true (for button clicks, not initial load)
+        if (shouldScroll) {
+            document.getElementById('talents-section').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Clear the container
+        talentsContainer.innerHTML = '';
+        
+        // MODIFICATION: Always show general talents first
+        displayTalentSection('general');
+        
+        // If the user selected something other than general, add those talents too
+        if (archetype !== 'general' && talentData[archetype]) {
+            // Add a divider between general and specific talents
+            const divider = document.createElement('hr');
+            divider.style.margin = '30px 0';
+            divider.style.borderTop = '1px dashed var(--border-color)';
+            talentsContainer.appendChild(divider);
+            
+            // Display the selected archetype talents
+            displayTalentSection(archetype);
+        }
+        
+        // Add animation class to fade in the content
+        talentsContainer.classList.add('fade-in');
+        // Remove the animation class after animation completes
+        setTimeout(() => {
+            talentsContainer.classList.remove('fade-in');
+        }, 500);
+    }
+
+    // Helper function to display a talent section
+    function displayTalentSection(archetype) {
+        if (!talentData[archetype]) return;
+        
+        // Add title and description
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = talentData[archetype].title;
+        talentsContainer.appendChild(titleElement);
+        
+        if (talentData[archetype].icons) {
+            const iconsElement = document.createElement('div');
+            iconsElement.className = 'talent-icons';
+            iconsElement.textContent = talentData[archetype].icons;
+            talentsContainer.appendChild(iconsElement);
+        }
+        
+        const descriptionElement = document.createElement('p');
+        descriptionElement.textContent = talentData[archetype].description;
+        talentsContainer.appendChild(descriptionElement);
+        
+        // Add each talent
+        talentData[archetype].talents.forEach(talent => {
+            const talentElement = document.createElement('div');
+            talentElement.className = 'talent-section';
+            
+            const nameElement = document.createElement('div');
+            nameElement.className = 'talent-name';
+            nameElement.innerHTML = talent.icons ? `${talent.icons} ${talent.name} ${talent.icons}` : talent.name;
+            talentElement.appendChild(nameElement);
+            
+            const typeElement = document.createElement('div');
+            typeElement.className = 'talent-type';
+            typeElement.textContent = talent.type;
+            talentElement.appendChild(typeElement);
+            
+            const effectElement = document.createElement('div');
+            effectElement.className = 'talent-description';
+            effectElement.textContent = `Effect: ${talent.effect}`;
+            talentElement.appendChild(effectElement);
+            
+            const mechanicsElement = document.createElement('div');
+            mechanicsElement.className = 'talent-mechanics';
+            mechanicsElement.textContent = `Mechanics: ${talent.mechanics}`;
+            talentElement.appendChild(mechanicsElement);
+            
+            if (talent.example) {
+                const exampleElement = document.createElement('div');
+                exampleElement.className = 'talent-example';
+                exampleElement.textContent = `Example: ${talent.example}`;
+                talentElement.appendChild(exampleElement);
+            }
+            
+            talentsContainer.appendChild(talentElement);
+        });
+    }
+    
+    // Add event listeners to all archetype buttons
+    archetypeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const archetype = this.getAttribute('data-archetype');
+            
+            // Apply visual styling to show which button is active
+            archetypeButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.backgroundColor = '';
+            });
+            this.classList.add('active');
+            this.style.backgroundColor = 'var(--primary-color)';
+            
+            // Load the appropriate talents with scrolling enabled
+            loadTalents(archetype, false);
+        });
+    });
+
+    // Initialize with general talents but no scrolling
+    loadTalents('general', false);
+});
+</script> 
+        
