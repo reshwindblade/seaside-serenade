@@ -14,6 +14,7 @@
                     $navLinks = [
                         'Dashboard' => route('admin.dashboard'),
                         'Users' => route('admin.users-list'),
+                        'API Docs' => route('api.docs')
                     ];
                 @endphp
                 <!-- Navigation Links -->

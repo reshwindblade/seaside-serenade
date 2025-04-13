@@ -6,25 +6,11 @@ use Livewire\Volt\Component;
 name('registration.thankyou');
 middleware(['auth']);
 
-?>
+new class extends Component
+{
+};
 
-@volt
-<div>
-    <?php
-    new class extends Component
-    {
-        public function render(): mixed
-        {
-            return <<<'HTML'
-            <div>
-                <!-- This div is needed for the Volt component structure -->
-            </div>
-            HTML;
-        }
-    };
-    ?>
-</div>
-@endvolt
+?>
 
 <x-layouts.marketing>
     <div class="flex flex-col items-center justify-center max-w-4xl min-h-screen px-4 py-12 mx-auto">

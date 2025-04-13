@@ -23,7 +23,6 @@ class User extends Authenticatable
         'provider',
         'provider_id',
         'avatar',
-        'is_admin',
     ];
 
     /**
@@ -47,7 +46,6 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'is_admin' => 'boolean',
         ];
     }
 
@@ -65,29 +63,5 @@ class User extends Authenticatable
     public function hasPasswordLogin(): bool
     {
         return !empty($this->password);
-    }
-
-    /**
-     * Check if the user is an admin
-     */
-    public function isAdmin(): bool
-    {
-        return $this->is_admin;
-    }
-
-    /**
-     * Get the characters created by this user
-     */
-    public function characters()
-    {
-        return $this->hasMany(Character::class, 'player_name', 'name');
-    }
-
-    /**
-     * Get the recaps created by this user
-     */
-    public function recaps()
-    {
-        return $this->hasMany(Recap::class, 'created_by');
     }
 }
