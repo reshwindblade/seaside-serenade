@@ -3,28 +3,32 @@
 use App\Http\Controllers\Auth\{
     EmailVerificationController, 
     LogoutController, 
-    SocialLoginController
 };
+use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
-// Redirects and Home Routes
-Route::redirect('home', '/')->name('home');
+// Home Route
+Route::get('/', fn() => view('pages.index'))->name('home');
 
+// Frontend Content Routes
+Route::get('/rules', fn() => view('pages.rules'))->name('rules');
+Route::get('/rules/{rule}', fn() => view('pages.rules.show'))->name('rules.show');
+
+Route::get('/npcs', fn() => view('pages.npcs'))->name('npcs');
+Route::get('/npcs/{npc}', fn() => view('pages.npcs.show'))->name('npcs.show');
+
+Route::get('/characters', fn() => view('pages.characters'))->name('characters');
+Route::get('/characters/{character}', fn() => view('pages.characters.show'))->name('characters.show');
+
+Route::get('/world-setting', fn() => view('pages.world'))->name('world');
+Route::get('/adventure-recaps', fn() => view('pages.recaps'))->name('recaps');
+Route::get('/powers-abilities', fn() => view('pages.powers'))->name('powers');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
     // Login Routes
     Route::get('/login', fn() => view('pages.auth.login'))
         ->name('login');
-
-    // Social Login Routes
-    Route::get('/login/{provider}', [SocialLoginController::class, 'redirectToProvider'])
-        ->name('login.social')
-        ->where('provider', 'facebook|google');
-
-    Route::get('/login/{provider}/callback', [SocialLoginController::class, 'handleProviderCallback'])
-        ->name('login.social.callback')
-        ->where('provider', 'facebook|google');
 
     // Registration Route with Conditional Access
     Route::get('/register', function () {
@@ -36,8 +40,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/forgot-password', fn() => view('pages.auth.password.request'))
         ->name('password.request');
 
-    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
+    Route::get('/reset-password/{token}', fn() => view('pages.auth.password.reset'))
+        ->name('password.reset');
 });
 
 // Protected Authentication Routes
@@ -50,11 +54,11 @@ Route::middleware('auth')->group(function () {
     // Logout
     Route::post('logout', LogoutController::class)->name('logout');
 
+    // Profile
+    Route::get('/profile', fn() => view('pages.profile.edit'))
+        ->name('profile.edit');
+    
     // Registration Confirmation
     Route::get('/registration/thankyou', fn() => view('pages.registration.thankyou'))
         ->name('registration.thankyou');
 });
-
-// Public Information Routes
-Route::get('/api/docs', fn() => view('pages.api-docs'))
-    ->name('api.docs');

@@ -9,19 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('provider')->nullable()->after('email');
-            $table->string('provider_id')->nullable()->after('provider');
-            $table->string('avatar')->nullable()->after('provider_id');
+            $table->boolean('is_admin')->default(false)->after('avatar');
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['provider', 'provider_id', 'avatar']);
+            $table->dropColumn('is_admin');
         });
     }
 };

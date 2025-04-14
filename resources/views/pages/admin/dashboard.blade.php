@@ -1,318 +1,315 @@
-{{-- resources/views/pages/admin/dashboard.blade.php --}}
 <?php
 
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Models\Rule;
+use App\Models\Npc;
+use App\Models\Character;
 use function Laravel\Folio\{middleware, name};
 use Livewire\Volt\Component;
 
 name('admin.dashboard');
-middleware(['auth']);
+middleware(['auth', 'admin']);
+
+new class extends Component
+{
+    public $stats = [
+        'users' => 0,
+        'rules' => 0,
+        'npcs' => 0,
+        'characters' => 0,
+    ];
+    
+    public $recentUsers = [];
+    public $recentContent = [];
+    
+    public function mount()
+    {
+        $this->loadStats();
+        $this->loadRecentUsers();
+        $this->loadRecentContent();
+    }
+    
+    public function loadStats()
+    {
+        $this->stats = [
+            'users' => User::count(),
+            'rules' => Rule::count(),
+            'npcs' => Npc::count(),
+            'characters' => Character::count(),
+        ];
+    }
+    
+    public function loadRecentUsers()
+    {
+        $this->recentUsers = User::latest()->take(5)->get();
+    }
+    
+    public function loadRecentContent()
+    {
+        // Combining different content types with polymorphic approach
+        $rules = Rule::latest()->take(3)->get()->map(function($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'type' => 'Rule',
+                'route' => route('admin.rules.edit', $item),
+                'created_at' => $item->created_at,
+                'is_active' => $item->is_active,
+            ];
+        });
+        
+        $npcs = Npc::latest()->take(3)->get()->map(function($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'type' => 'NPC',
+                'route' => route('admin.npcs.edit', $item),
+                'created_at' => $item->created_at,
+                'is_active' => $item->is_active,
+            ];
+        });
+        
+        $characters = Character::latest()->take(3)->get()->map(function($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'type' => 'Character',
+                'route' => route('admin.characters.edit', $item),
+                'created_at' => $item->created_at,
+                'is_active' => $item->is_active,
+            ];
+        });
+        
+        // Merge and sort by creation date
+        $combined = $rules->concat($npcs)->concat($characters);
+        $this->recentContent = $combined->sortByDesc('created_at')->take(10)->values()->all();
+    }
+};
 
 ?>
 
-<x-layouts.app>
+<x-layouts.admin>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                {{ __('Admin Dashboard') }}
-            </h2>
-            @if(env('APP_ENV') === 'local')
-                <div class="px-3 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800 dark:bg-amber-800 dark:text-amber-100">
-                    Using {{ env('USE_DUMMY_DATA', false) ? 'Dummy' : 'Real' }} Data
-                </div>
-            @endif
+        <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
+            Dashboard
+        </h1>
+        
+        <div>
+            <a href="{{ route('admin.dashboard') }}" class="admin-btn admin-btn-secondary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Refresh Data
+            </a>
         </div>
     </x-slot>
-
-    @volt
-    <?php
-    new class extends Component
-    {
-        public $totalUsers = 0;
-        public $activeUsers = 0;
-        public $newToday = 0;
-        public $totalRevenue = 0;
-        public $dailyStats = [];
-        public $chartView = 'daily'; // Options: daily, time, day
-        
-        public function mount()
-        {
-            $this->loadStats();
-        }
-
-        public function setChartView($view)
-        {
-            $this->chartView = $view;
-            $this->dispatch('chartViewChanged');
-        }
-
-        public function loadStats()
-        {
-            if (env('USE_DUMMY_DATA', false)) {
-                $this->loadDummyData();
-            } else {
-                $this->loadRealData();
-            }
-            
-            $this->dispatch('statsUpdated');
-        }
-
-        public function loadRealData()
-        {
-            // Total users count
-            $this->totalUsers = User::count();
-            
-            // Active users (users who logged in within the last 30 days)
-            $this->activeUsers = User::where('updated_at', '>=', Carbon::now()->subDays(30))->count();
-            
-            // Today's new users
-            $this->newToday = User::whereDate('created_at', Carbon::today())->count();
-            
-            // Total revenue (example - would need proper implementation)
-            $this->totalRevenue = 0; // Replace with actual revenue calculation
-                
-            // Daily stats for the last 14 days
-            $this->dailyStats = User::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
-                ->where('created_at', '>=', Carbon::now()->subDays(14))
-                ->groupBy('date')
-                ->orderBy('date')
-                ->get()
-                ->map(function ($item) {
-                    return [
-                        'date' => Carbon::parse($item->date)->format('Y-m-d'),
-                        'count' => $item->count,
-                        'label' => Carbon::parse($item->date)->format('M d')
-                    ];
-                })
-                ->toArray();
-        }
-
-        public function loadDummyData()
-        {
-            $this->totalUsers = 412;
-            $this->activeUsers = 260;
-            $this->newToday = 201;
-            $this->totalRevenue = 1626;
-            
-            // Generate dummy data for the last 14 days
-            $startDate = Carbon::now()->subDays(13);
-            $this->dailyStats = [];
-            
-            for ($i = 0; $i < 14; $i++) {
-                $date = $startDate->copy()->addDays($i);
-                $count = rand(10, 50); // Random data for most days
-                
-                // Create a pattern with some outliers
-                if ($i == 2) $count = 190;
-                else if ($i == 3) $count = 189;
-                else if ($i == 4) $count = 4;
-                else if ($i == 7) $count = 29;
-                else if ($i == 9) $count = 80;
-                
-                $this->dailyStats[] = [
-                    'date' => $date->format('Y-m-d'),
-                    'count' => $count,
-                    'label' => $date->format('M d')
-                ];
-            }
-        }
-    };
-    ?>
-
-    <div class="py-6">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <!-- Stats Overview -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <!-- Total Users -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
-                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Users</h3>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ $totalUsers }}</p>
-                </div>
-
-                <!-- Active Users -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
-                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Active Users</h3>
-                    <p class="text-3xl font-bold text-blue-500">{{ $activeUsers }}</p>
-                </div>
-
-                <!-- New Today -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
-                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">New Today</h3>
-                    <p class="text-3xl font-bold text-cyan-500">{{ $newToday }}</p>
-                </div>
-
-                <!-- Total Revenue -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg">
-                    <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Revenue</h3>
-                    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">${{ $totalRevenue }}</p>
+    
+    <div class="space-y-6">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Users Stat -->
+            <div class="admin-stat-card">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 rounded-full p-3 bg-pink-100 dark:bg-pink-900/30">
+                        <svg class="h-6 w-6 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <span class="admin-stat-label">Total Users</span>
+                        <span class="admin-stat-value">{{ $stats['users'] }}</span>
+                    </div>
                 </div>
             </div>
-
-            <!-- Chart Section -->
-            <div class="mb-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Registration</h2>
-                    <div class="inline-flex rounded-lg shadow-sm">
-                        <button 
-                            wire:click="setChartView('daily')" 
-                            class="px-4 py-2 text-sm font-medium {{ $chartView == 'daily' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200' }} rounded-l-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-10 focus:outline-none transition-colors"
-                        >
-                            Daily
-                        </button>
-                        <button 
-                            wire:click="setChartView('time')" 
-                            class="px-4 py-2 text-sm font-medium {{ $chartView == 'time' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200' }} border-t border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-10 focus:outline-none transition-colors"
-                        >
-                            Time of Day
-                        </button>
-                        <button 
-                            wire:click="setChartView('day')" 
-                            class="px-4 py-2 text-sm font-medium {{ $chartView == 'day' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 dark:bg-gray-800 dark:text-gray-200' }} rounded-r-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:z-10 focus:outline-none transition-colors"
-                        >
-                            Day of Week
-                        </button>
+            
+            <!-- Rules Stat -->
+            <div class="admin-stat-card">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 rounded-full p-3 bg-purple-100 dark:bg-purple-900/30">
+                        <svg class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <span class="admin-stat-label">Total Rules</span>
+                        <span class="admin-stat-value">{{ $stats['rules'] }}</span>
                     </div>
                 </div>
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
-                    <div class="h-80">
-                        <canvas id="registrationChart"></canvas>
+            </div>
+            
+            <!-- NPCs Stat -->
+            <div class="admin-stat-card">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 rounded-full p-3 bg-blue-100 dark:bg-blue-900/30">
+                        <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
                     </div>
-                    <div class="flex justify-start mt-4">
-                        <button id="downloadChartBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 transition duration-150 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-1">
-                            Download Chart
-                        </button>
+                    <div class="ml-4">
+                        <span class="admin-stat-label">Total NPCs</span>
+                        <span class="admin-stat-value">{{ $stats['npcs'] }}</span>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Characters Stat -->
+            <div class="admin-stat-card">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 rounded-full p-3 bg-green-100 dark:bg-green-900/30">
+                        <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <span class="admin-stat-label">Total Characters</span>
+                        <span class="admin-stat-value">{{ $stats['characters'] }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Quick Actions Card -->
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                        Quick Actions
+                    </h2>
+                </div>
+                <div class="admin-card-body">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+                        <a href="{{ route('admin.rules.create') }}" class="flex flex-col items-center p-4 border border-pink-100 dark:border-purple-900/30 rounded-lg bg-white dark:bg-gray-800 hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-colors">
+                            <svg class="h-8 w-8 text-pink-600 dark:text-pink-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">New Rule</span>
+                        </a>
+                        <a href="{{ route('admin.npcs.create') }}" class="flex flex-col items-center p-4 border border-pink-100 dark:border-purple-900/30 rounded-lg bg-white dark:bg-gray-800 hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-colors">
+                            <svg class="h-8 w-8 text-pink-600 dark:text-pink-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">New NPC</span>
+                        </a>
+                        <a href="{{ route('admin.characters.create') }}" class="flex flex-col items-center p-4 border border-pink-100 dark:border-purple-900/30 rounded-lg bg-white dark:bg-gray-800 hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-colors">
+                            <svg class="h-8 w-8 text-pink-600 dark:text-pink-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">New Character</span>
+                        </a>
+                        <a href="{{ route('admin.users.index') }}" class="flex flex-col items-center p-4 border border-pink-100 dark:border-purple-900/30 rounded-lg bg-white dark:bg-gray-800 hover:bg-pink-50 dark:hover:bg-pink-900/10 transition-colors">
+                            <svg class="h-8 w-8 text-pink-600 dark:text-pink-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Manage Users</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Content Card -->
+            <div class="admin-card lg:col-span-2">
+                <div class="admin-card-header">
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                        Recently Added Content
+                    </h2>
+                </div>
+                <div class="admin-card-body p-0">
+                    <div class="overflow-hidden">
+                        <ul class="divide-y divide-pink-100 dark:divide-purple-900/30">
+                            @forelse($recentContent as $item)
+                                <li class="py-4 px-6 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0">
+                                            @if($item['type'] === 'Rule')
+                                                <div class="h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                                                    <svg class="h-5 w-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                    </svg>
+                                                </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                                {{ $item['name'] }}
+                                            </div>
+                                            <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                                                <span class="admin-badge {{ $item['type'] === 'Rule' ? 'admin-badge-purple' : ($item['type'] === 'NPC' ? 'admin-badge-blue' : 'admin-badge-green') }} mr-2">
+                                                    {{ $item['type'] }}
+                                                </span>
+                                                <span>
+                                                    {{ $item['created_at']->diffForHumans() }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm {{ $item['is_active'] ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400' }}">
+                                                {{ $item['is_active'] ? 'Active' : 'Inactive' }}
+                                            </span>
+                                            <a href="{{ $item['route'] }}" class="text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-300">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            @empty
+                                <li class="py-8 px-6 text-center">
+                                    <p class="text-gray-500 dark:text-gray-400">No content has been added yet.</p>
+                                </li>
+                            @endforelse
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Users Card -->
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    Recently Registered Users
+                </h2>
+                <a href="{{ route('admin.users.index') }}" class="text-sm text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-300">
+                    View All
+                </a>
+            </div>
+            <div class="admin-card-body p-0">
+                <ul class="divide-y divide-pink-100 dark:divide-purple-900/30">
+                    @forelse($recentUsers as $user)
+                        <li class="py-4 px-6 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-400 to-purple-500 flex items-center justify-center text-white font-bold">
+                                    {{ substr($user->name, 0, 1) }}
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        {{ $user->name }}
+                                    </div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                                        {{ $user->email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-gray-500 dark:text-gray-400">
+                                    {{ $user->created_at->diffForHumans() }}
+                                </div>
+                                @if($user->is_admin)
+                                    <div class="admin-badge admin-badge-success">
+                                        Admin
+                                    </div>
+                                @endif
+                            </div>
+                        </li>
+                    @empty
+                        <li class="py-8 px-6 text-center">
+                            <p class="text-gray-500 dark:text-gray-400">No users have registered yet.</p>
+                        </li>
+                    @endforelse
+                </ul>
             </div>
         </div>
     </div>
-
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        let registrationChart;
-        
-        function initializeChart() {
-            const ctx = document.getElementById('registrationChart')?.getContext('2d');
-            if (!ctx) return;
-            
-            // If there's an existing chart, destroy it
-            if (registrationChart) {
-                registrationChart.destroy();
-            }
-            
-            const dailyStats = @js($dailyStats);
-            
-            // Format data for the chart
-            const labels = dailyStats.map(item => item.label || new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-            const data = dailyStats.map(item => item.count);
-            
-            // Create the chart
-            registrationChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Daily Registration',
-                        data: data,
-                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4,
-                        barThickness: 20,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false,
-                                color: 'rgba(200, 200, 200, 0.15)'
-                            },
-                            ticks: {
-                                precision: 0,
-                                font: {
-                                    size: 11
-                                }
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                font: {
-                                    size: 11
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            labels: {
-                                boxWidth: 15,
-                                usePointStyle: true,
-                                pointStyle: 'rect'
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleFont: {
-                                size: 12
-                            },
-                            bodyFont: {
-                                size: 13
-                            },
-                            padding: 10,
-                            cornerRadius: 4,
-                            callbacks: {
-                                label: function(context) {
-                                    return 'Users: ' + context.raw;
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 1000,
-                        easing: 'easeOutQuart'
-                    }
-                }
-            });
-            
-            // Set up download button
-            document.getElementById('downloadChartBtn')?.addEventListener('click', function() {
-                // Create a temporary link element
-                const link = document.createElement('a');
-                link.download = 'registration-chart.png';
-                link.href = document.getElementById('registrationChart').toDataURL('image/png', 1.0);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            });
-        }
-        
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', initializeChart);
-        
-        // Initialize when Livewire updates
-        document.addEventListener('livewire:initialized', function() {
-            window.Livewire.on('statsUpdated', initializeChart);
-            window.Livewire.on('chartViewChanged', initializeChart);
-        });
-        
-        // Re-initialize when the window resizes
-        window.addEventListener('resize', function() {
-            if (registrationChart) {
-                registrationChart.resize();
-            }
-        });
-    </script>
-    @endvolt
-</x-layouts.app>
+</x-layouts.admin>

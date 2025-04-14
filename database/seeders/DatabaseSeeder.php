@@ -13,9 +13,26 @@ class DatabaseSeeder extends Seeder
         // Create admin user
         User::factory()->create([
             'name' => 'Super Admin',
-            'email' => 'admin@webmaster.com',
-            'password' => Hash::make('webmasteradmin'), 
+            'email' => 'admin@seaside.com',
+            'password' => Hash::make('seasideadmin'), 
             'email_verified_at' => now(),
+            'is_admin' => true,
         ]);
-        }
+        
+        // Create regular user
+        User::factory()->create([
+            'name' => 'Regular User',
+            'email' => 'user@seaside.com',
+            'password' => Hash::make('seasideuser'),
+            'email_verified_at' => now(),
+            'is_admin' => false,
+        ]);
+        
+        // Call additional seeders if needed
+        $this->call([
+            RulesSeeder::class,
+            NpcsSeeder::class,
+            CharactersSeeder::class,
+        ]);
+    }
 }

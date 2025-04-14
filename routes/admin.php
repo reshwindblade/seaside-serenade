@@ -1,32 +1,48 @@
 <?php
 
-use App\Http\Controllers\Admin\ExportController;
+use App\Http\Controllers\Admin\{
+    RuleController,
+    NpcController,
+    CharacterController,
+    UserController,
+    SettingsController
+};
+use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
 
-// Admin Dashboard Routes
-Route::get('/dashboard', fn() => view('pages.admin.dashboard'))
-    ->name('admin.dashboard');
-
-// User Management Routes
-Route::get('/users', fn() => view('pages.admin.users-list'))
-    ->name('admin.users-list');
-
-// User Profile Route
-Route::get('/users/{id}/edit', fn($id) => view('pages.admin.user-edit', ['id' => $id]))
-    ->name('admin.users.edit');
-
-// Admin Settings Route
-Route::get('/settings', fn() => view('pages.admin.settings'))
-    ->name('admin.settings');
-
-// Export Routes
-Route::prefix('exports')->group(function () {
-    Route::get('/users/pdf', [ExportController::class, 'exportUsersPdf'])
-        ->name('admin.exports.users.pdf');
+// Admin Routes - All protected by auth and admin middleware
+Route::middleware(['auth', EnsureUserIsAdmin::class])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', fn() => view('pages.admin.dashboard'))
+        ->name('admin.dashboard');
     
-    Route::get('/users/excel', [ExportController::class, 'exportUsersExcel'])
-        ->name('admin.exports.users.excel');
+    // Rules Management
+    Route::prefix('rules')->group(function () {
+        Route::get('/', fn() => view('pages.admin.rules.index'))->name('admin.rules.index');
+        Route::get('/create', fn() => view('pages.admin.rules.create'))->name('admin.rules.create');
+        Route::get('/{rule}/edit', fn() => view('pages.admin.rules.edit'))->name('admin.rules.edit');
+    });
     
-    Route::get('/users/csv', [ExportController::class, 'exportUsersCsv'])
-        ->name('admin.exports.users.csv');
+    // NPCs Management
+    Route::prefix('npcs')->group(function () {
+        Route::get('/', fn() => view('pages.admin.npcs.index'))->name('admin.npcs.index');
+        Route::get('/create', fn() => view('pages.admin.npcs.create'))->name('admin.npcs.create');
+        Route::get('/{npc}/edit', fn() => view('pages.admin.npcs.edit'))->name('admin.npcs.edit');
+    });
+    
+    // Characters Management
+    Route::prefix('characters')->group(function () {
+        Route::get('/', fn() => view('pages.admin.characters.index'))->name('admin.characters.index');
+        Route::get('/create', fn() => view('pages.admin.characters.create'))->name('admin.characters.create');
+        Route::get('/{character}/edit', fn() => view('pages.admin.characters.edit'))->name('admin.characters.edit');
+    });
+    
+    // Users Management
+    Route::prefix('users')->group(function () {
+        Route::get('/', fn() => view('pages.admin.users.index'))->name('admin.users.index');
+        Route::get('/{user}/edit', fn() => view('pages.admin.users.edit'))->name('admin.users.edit');
+    });
+    
+    // Settings
+    Route::get('/settings', fn() => view('pages.admin.settings'))->name('admin.settings');
 });

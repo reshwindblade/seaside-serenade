@@ -1,0 +1,191 @@
+/* resources/css/magical-girl.css */
+
+/* Base styles */
+:root {
+    --primary-color: #FF5CB8;
+    --secondary-color: #B967FF;
+    --accent-color: #01CDFE;
+    --light-color: #FFFAFD;
+    --dark-color: #2A0E35;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* Background with subtle stars */
+.magical-girl-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.magical-stars {
+    background-image: 
+        radial-gradient(2px 2px at 40px 60px, #fff 100%, transparent),
+        radial-gradient(2px 2px at 20px 50px, rgba(255, 255, 255, 0.8) 100%, transparent),
+        radial-gradient(1px 1px at 30px 90px, rgba(255, 255, 255, 0.9) 100%, transparent),
+        radial-gradient(1px 1px at 40px 60px, rgba(255, 255, 255, 0.7) 100%, transparent),
+        radial-gradient(1px 1px at 110px 35px, rgba(255, 255, 255, 0.8) 100%, transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.9) 100%, transparent);
+    background-size: 200px 200px;
+    opacity: 0.3;
+    animation: twinkle 5s ease-in-out infinite alternate;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.dark .magical-stars {
+    opacity: 0.4;
+}
+
+@keyframes twinkle-dark {
+    0% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0.8;
+    }
+}
+
+/* Primary Button */
+.btn-magical {
+    @apply relative overflow-hidden bg-gradient-to-r from-pink-500 to-purple-500 text-white font-medium py-2 px-6 rounded-full shadow-md transform transition duration-300 hover:scale-105 hover:shadow-lg;
+}
+
+.btn-magical::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full bg-white opacity-0 transition-opacity duration-300;
+    mix-blend-mode: overlay;
+}
+
+.btn-magical:hover::before {
+    @apply opacity-20;
+}
+
+.btn-magical:active {
+    @apply transform scale-95;
+}
+
+/* Secondary Button */
+.btn-magical-secondary {
+    @apply relative overflow-hidden bg-white dark:bg-purple-900/30 text-pink-600 dark:text-pink-300 font-medium py-2 px-6 rounded-full shadow-md border-2 border-pink-300 dark:border-pink-500/30 transform transition duration-300 hover:scale-105 hover:shadow-lg hover:border-pink-400 dark:hover:border-pink-500/50;
+}
+
+/* Card styles */
+.magical-card {
+    @apply bg-white/80 dark:bg-purple-900/50 backdrop-blur-sm rounded-xl shadow-xl border border-pink-100 dark:border-purple-700/50 overflow-hidden transition-all duration-300 hover:shadow-pink-200/50 dark:hover:shadow-purple-500/30 hover:scale-[1.01];
+}
+
+.magical-card-header {
+    @apply bg-gradient-to-r from-pink-400/20 to-purple-400/20 dark:from-pink-600/20 dark:to-purple-600/20 p-4 border-b border-pink-100 dark:border-purple-700/50;
+}
+
+.magical-card-body {
+    @apply p-6;
+}
+
+/* Nav links */
+.nav-link-magical {
+    @apply relative px-3 py-2 text-pink-700 dark:text-pink-300 font-medium rounded-lg hover:bg-pink-100/50 dark:hover:bg-pink-800/20 transition-all duration-200;
+}
+
+.nav-link-magical.active {
+    @apply bg-pink-100 dark:bg-pink-800/20 text-pink-600 dark:text-pink-200;
+}
+
+.nav-link-magical.active::before {
+    content: '';
+    @apply absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-pink-400 to-purple-500 rounded-l;
+}
+
+/* Heading styles */
+.heading-magical {
+    @apply relative font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 dark:from-pink-400 dark:to-purple-400 inline-block;
+}
+
+.heading-magical::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-400 to-purple-400 dark:from-pink-300 dark:to-purple-300 rounded opacity-50;
+}
+
+/* Page title with sparkle */
+.page-title-magical {
+    @apply relative text-3xl font-bold text-pink-600 dark:text-pink-300 mb-6 inline-block;
+}
+
+.page-title-magical::before {
+    content: '✦';
+    @apply absolute -left-6 top-0 text-purple-400 dark:text-purple-300;
+}
+
+.page-title-magical::after {
+    content: '✦';
+    @apply absolute -right-6 top-0 text-purple-400 dark:text-purple-300;
+}
+
+/* Pinterest-style card grid */
+.pinterest-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-max;
+}
+
+/* Badge styles */
+.badge-magical {
+    @apply px-2 py-1 text-xs font-semibold rounded-full bg-gradient-to-r from-pink-400 to-purple-400 text-white dark:from-pink-500 dark:to-purple-500;
+}
+
+/* Focus outline */
+.focus-magical:focus {
+    @apply outline-none ring-2 ring-pink-400 dark:ring-pink-500 ring-opacity-50;
+}
+
+/* Glow effect */
+.glow-effect {
+    @apply relative;
+}
+
+.glow-effect::after {
+    content: '';
+    @apply absolute -inset-0.5 bg-gradient-to-r from-pink-400 to-purple-500 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300;
+    z-index: -1;
+}
+
+/* Coming soon banner */
+.coming-soon-banner {
+    @apply relative overflow-hidden bg-gradient-to-r from-pink-300/20 to-purple-300/20 dark:from-pink-800/20 dark:to-purple-800/20 p-10 rounded-xl border border-pink-200 dark:border-pink-800/30 text-center;
+}
+
+.coming-soon-banner::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full bg-[url('/public/images/sparkles.svg')] bg-repeat opacity-5;
+}
+
+.coming-soon-text {
+    @apply text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 dark:from-pink-400 dark:to-purple-400;
+}
+
+/* Markdown content */
+.markdown-content {
+    @apply prose prose-pink dark:prose-invert max-w-none;
+}
+
+.markdown-content h1, 
+.markdown-content h2, 
+.markdown-content h3 {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 dark:from-pink-400 dark:to-purple-400;
+}
+
+.markdown-content a {
+    @apply text-pink-600 dark:text-pink-300 hover:text-purple-600 dark:hover:text-purple-300 transition-colors;
+}
+
+/* Back to top button */
+.back-to-top {
+    @apply fixed bottom-5 right-5 w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center shadow-lg transform transition hover:scale-110 hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500;
+}
