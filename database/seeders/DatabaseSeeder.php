@@ -30,9 +30,7 @@ class DatabaseSeeder extends Seeder
         
         // Call additional seeders if needed
         $this->call([
-            RulesSeeder::class,
-            NpcsSeeder::class,
-            CharactersSeeder::class,
+            //RulesSeeder::class,
         ]);
     }
 }
