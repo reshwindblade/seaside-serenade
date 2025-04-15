@@ -8,7 +8,7 @@ middleware(['auth']);
 
 ?>
 
-<x-layouts.app>
+<x-layouts.admin>
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
@@ -22,5 +22,7 @@ middleware(['auth']);
         </div>
     </x-slot>
 
+    @volt
     <livewire:admin.dashboard-stats />
-</x-layouts.app>
+    @endvolt
+</x-layouts.admin>
