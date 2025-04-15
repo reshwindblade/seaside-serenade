@@ -19,7 +19,6 @@ class UsersTable extends Component
     public $perPage = 10;
     public $sortField = 'created_at';
     public $sortDirection = 'desc';
-    public $filterProvider = '';
     public $filterVerified = '';
     public $dateRange = '';
     
@@ -90,7 +89,6 @@ class UsersTable extends Component
     {
         $this->totalUsers = User::count();
         $this->verifiedUsers = User::whereNotNull('email_verified_at')->count();
-        $this->socialUsers = User::whereNotNull('provider')->count();
         $this->filteredUsers = $this->totalUsers;
     }
     
@@ -99,10 +97,6 @@ class UsersTable extends Component
         $this->resetPage();
     }
     
-    public function updatingFilterProvider()
-    {
-        $this->resetPage();
-    }
     
     public function updatingFilterVerified()
     {
@@ -142,7 +136,6 @@ class UsersTable extends Component
     public function resetFilters()
     {
         $this->search = '';
-        $this->filterProvider = '';
         $this->filterVerified = '';
         $this->dateRange = '';
         $this->resetPage();
@@ -211,15 +204,6 @@ class UsersTable extends Component
                   ->orWhere('email', 'like', '%' . $this->search . '%')
                   ->orWhere('phone', 'like', '%' . $this->search . '%');
             });
-        }
-        
-        // Filter by social login provider
-        if ($this->filterProvider) {
-            if ($this->filterProvider === 'email') {
-                $query->whereNull('provider');
-            } else {
-                $query->where('provider', $this->filterProvider);
-            }
         }
         
         // Filter by verification status
@@ -430,7 +414,6 @@ class UsersTable extends Component
         
         return view('livewire.admin.users-table', [
             'users' => $users,
-            'providers' => User::whereNotNull('provider')->distinct()->pluck('provider')->toArray(),
         ]);
     }
 }

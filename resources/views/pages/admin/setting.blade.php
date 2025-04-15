@@ -22,7 +22,6 @@ middleware(['auth']);
         public $appEnv;
         public $appDebug;
         public $registrationEnabled;
-        public $socialLoginEnabled;
         public $mailDriver;
         public $mailSettings = [
             'from_address' => '',
@@ -42,7 +41,6 @@ middleware(['auth']);
             $this->appEnv = app()->environment();
             $this->appDebug = config('app.debug') ? 'true' : 'false';
             $this->registrationEnabled = !config('app.disable_registration');
-            $this->socialLoginEnabled = config('app.social_login.facebook.enabled') || config('app.social_login.google.enabled');
             
             // Load mail settings
             $this->mailDriver = config('mail.default');
@@ -222,68 +220,6 @@ middleware(['auth']);
                                     <p class="text-gray-500 dark:text-gray-400">
                                         Allow new users to register through the application.
                                     </p>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-start">
-                                <div class="flex items-center h-5">
-                                    <input 
-                                        id="socialLoginEnabled" 
-                                        type="checkbox" 
-                                        wire:model="socialLoginEnabled" 
-                                        class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
-                                    >
-                                </div>
-                                <div class="ml-3 text-sm">
-                                    <label for="socialLoginEnabled" class="font-medium text-gray-700 dark:text-gray-300">
-                                        Enable Social Login
-                                    </label>
-                                    <p class="text-gray-500 dark:text-gray-400">
-                                        Allow users to log in with social media accounts.
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            <div x-data="{ open: false }" class="my-4">
-                                <button 
-                                    @click="open = !open" 
-                                    type="button" 
-                                    class="flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                                >
-                                    <svg class="w-5 h-5 mr-1" x-bind:class="open ? 'transform rotate-90' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                    Social Login Configuration
-                                </button>
-                                <div x-show="open" class="mt-4 p-4 bg-gray-50 dark:bg-gray-700/30 rounded-md">
-                                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                        <div>
-                                            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Facebook Login</h4>
-                                            <div class="space-y-3">
-                                                <x-ui.input 
-                                                    label="App ID" 
-                                                    type="text" 
-                                                    id="facebook_app_id" 
-                                                    disabled
-                                                    value="{{ config('app.social_login.facebook.client_id') }}"
-                                                    helpText="Modify in .env file"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-medium text-gray-700 dark:text-gray-300 mb-2">Google Login</h4>
-                                            <div class="space-y-3">
-                                                <x-ui.input 
-                                                    label="Client ID" 
-                                                    type="text" 
-                                                    id="google_client_id" 
-                                                    disabled
-                                                    value="{{ config('app.social_login.google.client_id') }}"
-                                                    helpText="Modify in .env file"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             

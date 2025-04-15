@@ -45,18 +45,7 @@
                             <span class="ml-4">Settings</span>
                         </a>
                     </li>
-
-                    <li class="relative px-6 py-3">
-                        @if(request()->routeIs('api.docs*'))
-                            <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 dark:bg-blue-500 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
-                        @endif
-                        <a href="{{ route('api.docs') }}" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 {{ request()->routeIs('api.docs*') ? 'text-gray-800 dark:text-gray-100' : '' }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            <span class="ml-4">API Documentation</span>
-                        </a>
-                    </li>
+                
                 </ul>
                 <div class="px-6 mt-10">
                     <form method="POST" action="{{ route('logout') }}">
@@ -133,14 +122,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
                                 <span class="ml-4">Settings</span>
-                            </a>
-                        </li>
-                        <li class="relative px-4 py-3">
-                            <a href="{{ route('api.docs') }}" class="flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 {{ request()->routeIs('api.docs*') ? 'text-gray-800 dark:text-gray-100' : 'text-gray-600 dark:text-gray-400' }}">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                                <span class="ml-4">API Documentation</span>
                             </a>
                         </li>
                     </ul>
