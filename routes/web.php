@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\{
     LogoutController, 
 };
 use App\Http\Middleware\EnsureUserIsAdmin;
+use App\Http\Controllers\MagicalGirlController;
 use Illuminate\Support\Facades\Route;
 
 // Home Route
@@ -61,4 +62,21 @@ Route::middleware('auth')->group(function () {
     // Registration Confirmation
     Route::get('/registration/thankyou', fn() => view('pages.registration.thankyou'))
         ->name('registration.thankyou');
+});
+
+
+// Magical Girl Routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Routes that require user to have a magical girl
+    Route::middleware(['has.magical.girl'])->group(function () {
+        Route::get('/magical-girl', [MagicalGirlController::class, 'show'])->name('magical-girl.show');
+        Route::get('/magical-girl/edit', [MagicalGirlController::class, 'edit'])->name('magical-girl.edit');
+        Route::put('/magical-girl', [MagicalGirlController::class, 'update'])->name('magical-girl.update');
+    });
+    
+    // Routes that redirect if user already has a magical girl
+    Route::middleware(['redirect.if.has.magical.girl'])->group(function () {
+        Route::get('/magical-girl/create', [MagicalGirlController::class, 'create'])->name('magical-girl.create');
+        Route::post('/magical-girl', [MagicalGirlController::class, 'store'])->name('magical-girl.store');
+    });
 });

@@ -28,9 +28,9 @@ class DatabaseSeeder extends Seeder
             'is_admin' => false,
         ]);
         
-        // Call additional seeders if needed
+        // Call additional seeders
         $this->call([
-            //RulesSeeder::class,
+            MagicalSkillSeeder::class,
         ]);
     }
 }

@@ -51,4 +51,20 @@ class User extends Authenticatable
     {
         return !empty($this->password);
     }
+    
+    /**
+     * Get the magical girl character associated with the user.
+     */
+    public function magicalGirl()
+    {
+        return $this->hasOne(MagicalGirl::class);
+    }
+    
+    /**
+     * Check if the user has created a magical girl character.
+     */
+    public function hasMagicalGirl(): bool
+    {
+        return $this->magicalGirl()->exists();
+    }
 }

@@ -42,6 +42,12 @@
                 <a href="{{ route('powers') }}" class="nav-link-magical {{ request()->routeIs('powers*') ? 'active' : '' }}">
                     Powers
                 </a>
+
+                @auth
+                <a href="{{ route('magical-girl.show') }}" class="nav-link-magical {{ request()->routeIs('magical-girl.*') ? 'active' : '' }}">
+                    My Magical Girl
+                </a>
+                @endauth
             </div>
 
             <!-- Right side actions -->
