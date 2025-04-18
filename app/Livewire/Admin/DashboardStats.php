@@ -13,10 +13,14 @@ class DashboardStats extends Component
     public $activeUsers = 0;
     public $newToday = 0;
     public $totalRevenue = 0;
-    public $dailyStats = [];
-    public $weeklyStats = [];
-    public $monthlyStats = [];
+    public $chartData = [];
     public $chartView = 'daily'; // Options: daily, weekly, monthly
+    public $systemMetrics = [
+        'cpu' => 28,
+        'memory' => 65,
+        'disk' => 42,
+        'uptime' => '23 days, 5 hours, 17 minutes'
+    ];
     
     public function mount()
     {
@@ -26,12 +30,13 @@ class DashboardStats extends Component
     public function setChartView($view)
     {
         $this->chartView = $view;
-        $this->dispatch('chartViewChanged', ['view' => $view]);
+        $this->loadStats();
+        $this->dispatch('chartViewChanged');
     }
 
     public function loadStats()
     {
-        if (env('USE_DUMMY_DATA', false)) {
+        if (env('USE_DUMMY_DATA', true)) {
             $this->loadDummyData();
         } else {
             $this->loadRealData();
@@ -52,11 +57,28 @@ class DashboardStats extends Component
         $this->newToday = User::whereDate('created_at', Carbon::today())->count();
         
         // In a real application, you would calculate actual revenue
-        // This is a placeholder - you would replace with actual revenue logic
+        // This is a placeholder - replace with actual revenue logic
         $this->totalRevenue = 0;
             
-        // Daily stats for the last 14 days
-        $this->dailyStats = User::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+        // Chart data based on selected view
+        switch ($this->chartView) {
+            case 'weekly':
+                $this->loadWeeklyData();
+                break;
+            case 'monthly':
+                $this->loadMonthlyData();
+                break;
+            case 'daily':
+            default:
+                $this->loadDailyData();
+                break;
+        }
+    }
+
+    protected function loadDailyData()
+    {
+        // Get registration data for the last 14 days
+        $this->chartData = User::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
             ->where('created_at', '>=', Carbon::now()->subDays(14))
             ->groupBy('date')
             ->orderBy('date')
@@ -69,28 +91,32 @@ class DashboardStats extends Component
                 ];
             })
             ->toArray();
+    }
 
-        // Weekly stats
-        $this->weeklyStats = User::select(DB::raw('YEARWEEK(created_at, 1) as yearweek'), DB::raw('count(*) as count'))
-            ->where('created_at', '>=', Carbon::now()->subWeeks(12))
-            ->groupBy('yearweek')
-            ->orderBy('yearweek')
-            ->get()
-            ->map(function ($item) {
-                $year = substr($item->yearweek, 0, 4);
-                $week = substr($item->yearweek, 4);
-                $weekStart = Carbon::now()->setISODate($year, $week);
-                
-                return [
-                    'date' => $weekStart->format('Y-m-d'),
-                    'count' => $item->count,
-                    'label' => 'Week ' . $weekStart->weekOfYear
-                ];
-            })
-            ->toArray();
+    protected function loadWeeklyData()
+    {
+        // Get registration data for the last 12 weeks
+        $this->chartData = [];
+        $startDate = Carbon::now()->subWeeks(11)->startOfWeek();
+        
+        for ($i = 0; $i < 12; $i++) {
+            $weekStart = $startDate->copy()->addWeeks($i);
+            $weekEnd = $weekStart->copy()->endOfWeek();
+            
+            $count = User::whereBetween('created_at', [$weekStart, $weekEnd])->count();
+            
+            $this->chartData[] = [
+                'date' => $weekStart->format('Y-m-d'),
+                'count' => $count,
+                'label' => 'Week ' . $weekStart->weekOfYear
+            ];
+        }
+    }
 
-        // Monthly stats
-        $this->monthlyStats = User::select(
+    protected function loadMonthlyData()
+    {
+        // Get registration data for the last 12 months
+        $this->chartData = User::select(
                 DB::raw('YEAR(created_at) as year'), 
                 DB::raw('MONTH(created_at) as month'), 
                 DB::raw('count(*) as count')
@@ -118,9 +144,26 @@ class DashboardStats extends Component
         $this->newToday = 37;
         $this->totalRevenue = 1626;
         
+        // Generate dummy chart data based on selected view
+        switch ($this->chartView) {
+            case 'weekly':
+                $this->generateDummyWeeklyData();
+                break;
+            case 'monthly':
+                $this->generateDummyMonthlyData();
+                break;
+            case 'daily':
+            default:
+                $this->generateDummyDailyData();
+                break;
+        }
+    }
+
+    protected function generateDummyDailyData()
+    {
         // Generate dummy data for the last 14 days
         $startDate = Carbon::now()->subDays(13);
-        $this->dailyStats = [];
+        $this->chartData = [];
         
         for ($i = 0; $i < 14; $i++) {
             $date = $startDate->copy()->addDays($i);
@@ -134,16 +177,19 @@ class DashboardStats extends Component
             else if ($i == 9) $count = 62;
             else if ($i == 12) $count = 37;
             
-            $this->dailyStats[] = [
+            $this->chartData[] = [
                 'date' => $date->format('Y-m-d'),
                 'count' => $count,
                 'label' => $date->format('M d')
             ];
         }
+    }
 
+    protected function generateDummyWeeklyData()
+    {
         // Generate dummy weekly data
         $startWeek = Carbon::now()->subWeeks(11);
-        $this->weeklyStats = [];
+        $this->chartData = [];
         
         for ($i = 0; $i < 12; $i++) {
             $date = $startWeek->copy()->addWeeks($i);
@@ -154,16 +200,19 @@ class DashboardStats extends Component
             else if ($i == 7) $count = 420;
             else if ($i == 10) $count = 210;
             
-            $this->weeklyStats[] = [
+            $this->chartData[] = [
                 'date' => $date->format('Y-m-d'),
                 'count' => $count,
                 'label' => 'Week ' . $date->weekOfYear
             ];
         }
+    }
 
+    protected function generateDummyMonthlyData()
+    {
         // Generate dummy monthly data
         $startMonth = Carbon::now()->subMonths(11);
-        $this->monthlyStats = [];
+        $this->chartData = [];
         
         for ($i = 0; $i < 12; $i++) {
             $date = $startMonth->copy()->addMonths($i);
@@ -174,7 +223,7 @@ class DashboardStats extends Component
             else if ($i == 5) $count = 2200;
             else if ($i == 8) $count = 1500;
             
-            $this->monthlyStats[] = [
+            $this->chartData[] = [
                 'date' => $date->format('Y-m-d'),
                 'count' => $count,
                 'label' => $date->format('M Y')
@@ -182,23 +231,59 @@ class DashboardStats extends Component
         }
     }
 
-    public function getChartData()
+    public function clearSystemCache()
     {
-        switch ($this->chartView) {
-            case 'weekly':
-                return $this->weeklyStats;
-            case 'monthly':
-                return $this->monthlyStats;
-            case 'daily':
-            default:
-                return $this->dailyStats;
+        // In a real application, this would call relevant cache clearing commands
+        // For example: Artisan::call('cache:clear');
+        
+        $this->dispatch('toast', message: 'System cache cleared successfully', data: ['position' => 'top-right', 'type' => 'success']);
+    }
+    
+    public function getRecentUsers()
+    {
+        // Get 5 most recent users
+        if (env('USE_DUMMY_DATA', true)) {
+            return [
+                ['id' => 1, 'name' => 'Sarah Johnson', 'email' => 'sarah.j@example.com', 'time' => '5 mins ago'],
+                ['id' => 2, 'name' => 'Michael Chen', 'email' => 'mchen@example.com', 'time' => '20 mins ago'],
+                ['id' => 3, 'name' => 'Olivia Smith', 'email' => 'olivia.smith@example.com', 'time' => '1 hour ago'],
+                ['id' => 4, 'name' => 'James Wilson', 'email' => 'jwilson@example.com', 'time' => '3 hours ago'],
+                ['id' => 5, 'name' => 'Emma Garcia', 'email' => 'egarcia@example.com', 'time' => '5 hours ago'],
+            ];
         }
+        
+        return User::latest()
+            ->take(5)
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'time' => $user->created_at->diffForHumans()
+                ];
+            })
+            ->toArray();
+    }
+    
+    public function getRecentActivity()
+    {
+        // In a real application, this would query a recent activity log
+        // This is dummy data for demonstration
+        return [
+            ['id' => 1, 'type' => 'login', 'user' => 'Sarah Johnson', 'time' => '5 mins ago'],
+            ['id' => 2, 'type' => 'register', 'user' => 'Raj Patel', 'time' => '10 mins ago'],
+            ['id' => 3, 'type' => 'update', 'user' => 'Michael Chen', 'time' => '20 mins ago'],
+            ['id' => 4, 'type' => 'login', 'user' => 'Emma Garcia', 'time' => '30 mins ago'],
+            ['id' => 5, 'type' => 'content', 'user' => 'Admin', 'time' => '1 hour ago', 'description' => 'Updated rules page'],
+        ];
     }
 
     public function render()
     {
         return view('livewire.admin.dashboard-stats', [
-            'chartData' => $this->getChartData()
+            'recentUsers' => $this->getRecentUsers(),
+            'recentActivity' => $this->getRecentActivity()
         ]);
     }
 }
