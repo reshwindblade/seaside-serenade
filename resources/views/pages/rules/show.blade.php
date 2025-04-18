@@ -47,14 +47,14 @@
 
         <!-- Related Rules -->
         @php
-            $relatedRules = App\Models\Rule::active()
+            $relatedRules = \App\Models\Rule::active()
                 ->where('id', '!=', $rule->id)
-                ->byCategory($rule->category)
+                ->where('category', $rule->category)
                 ->ordered()
                 ->limit(3)
                 ->get();
         @endphp
-        
+
         @if($relatedRules->count() > 0)
             <div class="mt-10">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Related Rules</h2>

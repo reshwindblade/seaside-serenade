@@ -58,7 +58,7 @@
 
         <!-- Related NPCs -->
         @php
-            $relatedNpcs = App\Models\Npc::active()
+            $relatedNpcs = \App\Models\Npc::active()
                 ->where('id', '!=', $npc->id)
                 ->ordered()
                 ->inRandomOrder()

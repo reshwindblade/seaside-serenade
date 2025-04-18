@@ -2,20 +2,20 @@
 
 namespace App\Providers;
 
-use App\Livewire\Admin\UsersTable;
+use App\Livewire\Auth\Login;
 use App\Livewire\Admin\DashboardStats;
-use App\Livewire\Admin\Settings;
-use App\Livewire\Auth\VerificationNotice;
+use App\Livewire\Admin\UsersTable;
 use App\Livewire\CharactersList;
 use App\Livewire\NpcsList;
+use App\Livewire\Profile\Edit as ProfileEdit;
 use App\Livewire\RulesList;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
-class LivewireComponentProvider extends ServiceProvider
+class LivewireServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      */
     public function register(): void
     {
@@ -23,21 +23,23 @@ class LivewireComponentProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      */
     public function boot(): void
     {
-        // Admin Components
-        Livewire::component('admin.users-table', UsersTable::class);
+        // Auth components
+        Livewire::component('auth.login', Login::class);
+        
+        // Admin components
         Livewire::component('admin.dashboard-stats', DashboardStats::class);
-        Livewire::component('admin.settings', Settings::class);
+        Livewire::component('admin.users-table', UsersTable::class);
         
-        // Auth Components
-        Livewire::component('auth.verification-notice', VerificationNotice::class);
+        // User profile components
+        Livewire::component('profile.edit', ProfileEdit::class);
         
-        // Frontend Components
-        Livewire::component('characters-list', CharactersList::class);
-        Livewire::component('npcs-list', NpcsList::class);
+        // Content components
         Livewire::component('rules-list', RulesList::class);
+        Livewire::component('npcs-list', NpcsList::class);
+        Livewire::component('characters-list', CharactersList::class);
     }
 }
