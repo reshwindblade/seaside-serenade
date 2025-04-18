@@ -1,36 +1,3 @@
-<?php
-
-use App\Models\Rule;
-use function Laravel\Folio\{name};
-use Livewire\Volt\Component;
-
-name('rules.show');
-
-new class extends Component
-{
-    public Rule $rule;
-    public $relatedRules = [];
-
-    public function mount(Rule $rule)
-    {
-        if (!$rule->is_active) {
-            abort(404);
-        }
-        
-        $this->rule = $rule;
-        
-        // Get related rules from the same category
-        $this->relatedRules = Rule::active()
-            ->where('id', '!=', $rule->id)
-            ->byCategory($rule->category)
-            ->ordered()
-            ->limit(3)
-            ->get();
-    }
-};
-
-?>
-
 <x-layouts.magical-ocean>
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <!-- Breadcrumbs -->
@@ -79,6 +46,15 @@ new class extends Component
         </article>
 
         <!-- Related Rules -->
+        @php
+            $relatedRules = App\Models\Rule::active()
+                ->where('id', '!=', $rule->id)
+                ->byCategory($rule->category)
+                ->ordered()
+                ->limit(3)
+                ->get();
+        @endphp
+        
         @if($relatedRules->count() > 0)
             <div class="mt-10">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Related Rules</h2>

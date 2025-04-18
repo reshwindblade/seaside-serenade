@@ -3,11 +3,15 @@
 use App\Http\Controllers\Auth\{
     EmailVerificationController, 
     LogoutController, 
+    PasswordResetLinkController
 };
 use App\Http\Controllers\MagicalGirlController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Livewire\Admin\DashboardStats;
 use App\Livewire\Admin\UsersTable;
+use App\Livewire\RulesList;
+use App\Livewire\NpcsList;
+use App\Livewire\CharactersList;
 use Illuminate\Support\Facades\Route;
 
 // Home Route
@@ -80,7 +84,7 @@ Route::middleware('guest')->group(function () {
         return view('pages.auth.password.reset', compact('token'));
     })->name('password.reset');
     
-    Route::post('/password-email', [App\Http\Controllers\Auth\PasswordResetLinkController::class, 'store'])
+    Route::post('/password-email', [PasswordResetLinkController::class, 'store'])
         ->name('password.email');
 });
 
@@ -112,4 +116,34 @@ Route::middleware('auth')->group(function () {
     Route::get('/confirm-password', function() {
         return view('pages.auth.password.confirm');
     })->name('password.confirm');
+
+    // Magical Girl Routes
+    Route::get('/magical-girl/create', [MagicalGirlController::class, 'create'])
+        ->name('magical-girl.create');
+    Route::post('/magical-girl', [MagicalGirlController::class, 'store'])
+        ->name('magical-girl.store');
+    Route::get('/magical-girl', [MagicalGirlController::class, 'show'])
+        ->name('magical-girl.show');
+    Route::get('/magical-girl/edit', [MagicalGirlController::class, 'edit'])
+        ->name('magical-girl.edit');
+    Route::put('/magical-girl', [MagicalGirlController::class, 'update'])
+        ->name('magical-girl.update');
+});
+
+// Admin Routes
+Route::prefix('admin')->middleware(['auth', EnsureUserIsAdmin::class])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function() {
+        return view('pages.admin.dashboard');
+    })->name('admin.dashboard');
+
+    // Users management
+    Route::get('/users', function() {
+        return view('pages.admin.users-list');
+    })->name('admin.users-list');
+
+    // Settings
+    Route::get('/settings', function() {
+        return view('pages.admin.settings');
+    })->name('admin.settings');
 });

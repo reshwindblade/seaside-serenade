@@ -1,13 +1,3 @@
-<?php
-
-use function Laravel\Folio\{middleware, name};
-use Livewire\Volt\Component;
-
-name('admin.dashboard');
-middleware(['auth']);
-
-?>
-
 <x-layouts.admin>
     <x-slot name="header">
         <div class="flex justify-between items-center">
@@ -22,7 +12,5 @@ middleware(['auth']);
         </div>
     </x-slot>
 
-    @volt
-    <livewire:admin.dashboard-stats />
-    @endvolt
+    @livewire('admin.dashboard-stats')
 </x-layouts.admin>

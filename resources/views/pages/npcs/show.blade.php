@@ -1,36 +1,3 @@
-<?php
-
-use App\Models\Npc;
-use function Laravel\Folio\{name};
-use Livewire\Volt\Component;
-
-name('npcs.show');
-
-new class extends Component
-{
-    public Npc $npc;
-    public $relatedNpcs = [];
-
-    public function mount(Npc $npc)
-    {
-        if (!$npc->is_active) {
-            abort(404);
-        }
-        
-        $this->npc = $npc;
-        
-        // Get other NPCs (could be expanded with relationship logic later)
-        $this->relatedNpcs = Npc::active()
-            ->where('id', '!=', $npc->id)
-            ->ordered()
-            ->inRandomOrder()
-            ->limit(3)
-            ->get();
-    }
-};
-
-?>
-
 <x-layouts.magical-ocean>
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <!-- Breadcrumbs -->
@@ -90,6 +57,15 @@ new class extends Component
         </article>
 
         <!-- Related NPCs -->
+        @php
+            $relatedNpcs = App\Models\Npc::active()
+                ->where('id', '!=', $npc->id)
+                ->ordered()
+                ->inRandomOrder()
+                ->limit(3)
+                ->get();
+        @endphp
+        
         @if($relatedNpcs->count() > 0)
             <div class="mt-10">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Other Characters</h2>
