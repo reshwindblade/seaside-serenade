@@ -1,27 +1,3 @@
-<?php
-
-use function Laravel\Folio\{name};
-use Livewire\Volt\Component;
-
-name('home');
-
-new class extends Component
-{
-    public function mount()
-    {
-        // Check if registration is disabled
-        $this->registrationDisabled = config('app.disable_registration', false);
-        
-        // Check if logged-in user has a magical girl character
-        $this->userHasMagicalGirl = auth()->check() && auth()->user()->hasMagicalGirl();
-    }
-    
-    public $registrationDisabled;
-    public $userHasMagicalGirl;
-};
-
-?>
-
 <x-layouts.magical-ocean>
     <!-- Hero Section -->
     <section class="relative pt-20 pb-24 overflow-hidden">
@@ -61,7 +37,7 @@ new class extends Component
                          class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                         
                         @auth
-                            @if($userHasMagicalGirl)
+                            @if(auth()->user()->hasMagicalGirl())
                                 <a href="{{ route('magical-girl.show') }}" 
                                    class="relative overflow-hidden group inline-flex items-center px-8 py-3 font-medium text-base rounded-xl text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-blue-700/30 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 w-full sm:w-auto justify-center">
                                     <span class="relative z-10">View Your Magical Girl</span>
@@ -87,7 +63,7 @@ new class extends Component
                                 </a>
                             @endif
                         @else
-                            @if(!$registrationDisabled)
+                            @if(!config('app.disable_registration'))
                                 <a href="{{ route('register') }}" 
                                    class="relative overflow-hidden group inline-flex items-center px-8 py-3 font-medium text-base rounded-xl text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-blue-700/30 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 w-full sm:w-auto justify-center">
                                     <span class="relative z-10">Join the Adventure</span>
@@ -230,69 +206,4 @@ new class extends Component
                         <p class="text-blue-900/70 dark:text-blue-100/70 mb-4">Discover the magical powers, transformations, and special abilities available in our world.</p>
                         <div class="flex items-center text-amber-600 dark:text-amber-400 font-medium group-hover:translate-x-1 transition-transform">
                             Discover Powers
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Latest Updates Section -->
-    <section class="py-16">
-        <div class="container px-6 mx-auto max-w-6xl">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">Latest Adventures</h2>
-                <p class="text-blue-900/70 dark:text-blue-100/70 max-w-2xl mx-auto">Catch up on recent adventures and campaign recaps!</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Recaps Card -->
-                <a href="{{ route('recaps') }}" class="md:col-span-2 bg-white dark:bg-gray-800 rounded-xl border border-blue-100 dark:border-blue-800/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2 text-blue-700 dark:text-blue-300">Adventure Recaps</h3>
-                        <p class="text-blue-900/70 dark:text-blue-100/70 mb-4">Stay up to date with the latest adventures and campaign progress.</p>
-                        <div class="flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:translate-x-1 transition-transform">
-                            Read Recaps
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- Join Us CTA -->
-                <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-md overflow-hidden text-white">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">Join Our Adventure</h3>
-                        <p class="mb-4 text-white/80">Create your magical girl character and dive into the adventure today!</p>
-                        
-                        @auth
-                            @if($userHasMagicalGirl)
-                                <a href="{{ route('magical-girl.show') }}" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-lg font-medium transition-colors hover:bg-blue-50">
-                                    View Character
-                                </a>
-                            @else
-                                <a href="{{ route('magical-girl.create') }}" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-lg font-medium transition-colors hover:bg-blue-50">
-                                    Create Character
-                                </a>
-                            @endif
-                        @else
-                            @if(!$registrationDisabled)
-                                <a href="{{ route('register') }}" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-lg font-medium transition-colors hover:bg-blue-50">
-                                    Sign Up Now
-                                </a>
-                            @else
-                                <a href="{{ route('login') }}" class="inline-flex items-center px-4 py-2 bg-white text-blue-600 rounded-lg font-medium transition-colors hover:bg-blue-50">
-                                    Sign In
-                                </a>
-                            @endif
-                        @endauth
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</x-layouts.magical-ocean>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24
