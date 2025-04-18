@@ -308,3 +308,92 @@
                                     Clear System Cache
                                 </button>
                             </div>
+                        </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    document.addEventListener('livewire:initialized', function() {
+        // Chart configuration
+        const ctx = document.getElementById('registrationChart').getContext('2d');
+        let chart;
+
+        // Download chart functionality
+        const downloadChartBtn = document.getElementById('downloadChartBtn');
+        downloadChartBtn.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'user_registrations.png';
+            link.href = chart.toBase64Image();
+            link.click();
+        });
+
+        // Chart rendering function
+        function renderChart(data) {
+            // Destroy existing chart if it exists
+            if (chart) {
+                chart.destroy();
+            }
+
+            // Prepare chart data
+            const labels = data.map(item => item.label);
+            const values = data.map(item => item.count);
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'User Registrations',
+                        data: values,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1,
+                        fill: {
+                            target: 'origin',
+                            above: 'rgba(75, 192, 192, 0.2)'
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Registrations'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Livewire event listeners
+        Livewire.on('statsUpdated', (event) => {
+            const chartData = @this.get('chartData');
+            renderChart(chartData);
+        });
+
+        Livewire.on('chartViewChanged', (event) => {
+            const chartData = @this.get('chartData');
+            renderChart(chartData);
+        });
+
+        // Initial chart render
+        const initialChartData = @this.get('chartData');
+        renderChart(initialChartData);
+    });
+</script>
