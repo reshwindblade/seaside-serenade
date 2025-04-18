@@ -10,7 +10,7 @@ middleware(['auth', 'verified']);
 
 ?>
 
-<x-layouts.app>
+<x-layouts.magical-ocean>
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
@@ -123,4 +123,4 @@ middleware(['auth', 'verified']);
         </div>
     </div>
     @endvolt
-</x-layouts.app>
+</x-layouts.magical-ocean>

@@ -31,7 +31,7 @@ new class extends Component
 
 ?>
 
-<x-magical-girl.layout>
+<x-layouts.magical-ocean>
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <!-- Breadcrumbs -->
         <nav class="flex mb-6" aria-label="Breadcrumb">
@@ -125,4 +125,4 @@ new class extends Component
             </a>
         </div>
     </div>
-</x-magical-girl.layout>
+</x-layouts.magical-ocean>
