@@ -3,89 +3,57 @@
 use App\Http\Controllers\Auth\{
     EmailVerificationController, 
     LogoutController, 
-    PasswordResetLinkController
+    PasswordResetLinkController,
 };
 use App\Http\Controllers\MagicalGirlController;
-use App\Http\Middleware\EnsureUserIsAdmin;
-use App\Livewire\Admin\DashboardStats;
-use App\Livewire\Admin\UsersTable;
-use App\Livewire\RulesList;
-use App\Livewire\NpcsList;
-use App\Livewire\CharactersList;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RuleController;
+use App\Http\Controllers\NpcController;
+use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\WorldController;
+use App\Http\Controllers\PowerController;
+use App\Http\Controllers\RecapController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
+
 // Home Route
-Route::get('/', function () {
-    return view('pages.index');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Frontend Content Routes
-Route::get('/rules', function () {
-    return view('pages.rules');
-})->name('rules');
+Route::get('/rules', [RuleController::class, 'index'])->name('rules');
+Route::get('/rules/{rule}', [RuleController::class, 'show'])->name('rules.show');
 
-Route::get('/rules/{rule}', function (App\Models\Rule $rule) {
-    if (!$rule->is_active) {
-        abort(404);
-    }
-    return view('pages.rules.show', compact('rule'));
-})->name('rules.show');
+Route::get('/npcs', [NpcController::class, 'index'])->name('npcs');
+Route::get('/npcs/{npc}', [NpcController::class, 'show'])->name('npcs.show');
 
-Route::get('/npcs', function () {
-    return view('pages.npcs');
-})->name('npcs');
+Route::get('/characters', [CharacterController::class, 'index'])->middleware(['auth', 'verified'])->name('characters');
+Route::get('/characters/{character}', [CharacterController::class, 'show'])->name('characters.show');
 
-Route::get('/npcs/{npc}', function (App\Models\Npc $npc) {
-    if (!$npc->is_active) {
-        abort(404);
-    }
-    return view('pages.npcs.show', compact('npc'));
-})->name('npcs.show');
-
-Route::get('/characters', function () {
-    return view('pages.characters');
-})->middleware(['auth', 'verified'])->name('characters');
-
-Route::get('/characters/{character}', function (App\Models\Character $character) {
-    return view('pages.characters.show', compact('character'));
-})->name('characters.show');
-
-Route::get('/world-setting', function () {
-    return view('pages.world');
-})->name('world');
-
-Route::get('/adventure-recaps', function () {
-    return view('pages.recaps');
-})->name('recaps');
-
-Route::get('/powers-abilities', function () {
-    return view('pages.powers');
-})->name('powers');
+Route::get('/world-setting', [WorldController::class, 'index'])->name('world');
+Route::get('/adventure-recaps', [RecapController::class, 'index'])->name('recaps');
+Route::get('/powers-abilities', [PowerController::class, 'index'])->name('powers');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
     // Login Routes
-    Route::get('/login', function () {
-        return view('pages.auth.login');
-    })->name('login');
+    Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 
     // Registration Route with Conditional Access
-    Route::get('/register', function () {
-        abort_if(config('app.disable_registration'), 403, 'New account registration is currently disabled.');
-        return view('pages.auth.register');
-    })->name('register');
+    Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
     // Password Reset Routes
-    Route::get('/forgot-password', function () {
-        return view('pages.auth.password.request');
-    })->name('password.request');
-
-    Route::get('/reset-password/{token}', function ($token) {
-        return view('pages.auth.password.reset', compact('token'));
-    })->name('password.reset');
-    
-    Route::post('/password-email', [PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
+    Route::get('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'reset'])->name('password.update');
 });
 
 // Protected Authentication Routes
@@ -95,55 +63,43 @@ Route::middleware('auth')->group(function () {
         ->middleware('signed')
         ->name('verification.verify');
     
-    Route::get('/email/verify', function () {
-        return view('pages.auth.verify');
-    })->middleware('throttle:6,1')->name('verification.notice');
+    Route::get('/email/verify', [App\Http\Controllers\Auth\VerificationController::class, 'show'])
+        ->middleware('throttle:6,1')
+        ->name('verification.notice');
+    
+    Route::post('/email/verification-notification', [App\Http\Controllers\Auth\VerificationController::class, 'resend'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
 
     // Logout
     Route::post('logout', LogoutController::class)->name('logout');
 
     // Profile
-    Route::get('/profile', function () {
-        return view('pages.profile.edit');
-    })->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     // Registration Confirmation
-    Route::get('/registration/thankyou', function () {
-        return view('pages.registration.thankyou');
-    })->name('registration.thankyou');
+    Route::get('/registration/thankyou', [App\Http\Controllers\Auth\RegisterController::class, 'thankYou'])
+        ->name('registration.thankyou');
     
     // Password Confirm
-    Route::get('/confirm-password', function() {
-        return view('pages.auth.password.confirm');
-    })->name('password.confirm');
-
+    Route::get('/confirm-password', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'showConfirmForm'])
+        ->name('password.confirm');
+    Route::post('/confirm-password', [App\Http\Controllers\Auth\ConfirmPasswordController::class, 'confirm']);
+    
     // Magical Girl Routes
-    Route::get('/magical-girl/create', [MagicalGirlController::class, 'create'])
-        ->name('magical-girl.create');
-    Route::post('/magical-girl', [MagicalGirlController::class, 'store'])
-        ->name('magical-girl.store');
-    Route::get('/magical-girl', [MagicalGirlController::class, 'show'])
-        ->name('magical-girl.show');
-    Route::get('/magical-girl/edit', [MagicalGirlController::class, 'edit'])
-        ->name('magical-girl.edit');
-    Route::put('/magical-girl', [MagicalGirlController::class, 'update'])
-        ->name('magical-girl.update');
-});
-
-// Admin Routes
-Route::prefix('admin')->middleware(['auth', EnsureUserIsAdmin::class])->group(function () {
-    // Dashboard
-    Route::get('/dashboard', function() {
-        return view('pages.admin.dashboard');
-    })->name('admin.dashboard');
-
-    // Users management
-    Route::get('/users', function() {
-        return view('pages.admin.users-list');
-    })->name('admin.users-list');
-
-    // Settings
-    Route::get('/settings', function() {
-        return view('pages.admin.settings');
-    })->name('admin.settings');
+    Route::prefix('magical-girl')->name('magical-girl.')->group(function () {
+        Route::get('/create', [MagicalGirlController::class, 'create'])
+            ->middleware('redirect.if.has.magical.girl')
+            ->name('create');
+        Route::post('/store', [MagicalGirlController::class, 'store'])->name('store');
+        Route::get('/show', [MagicalGirlController::class, 'show'])
+            ->middleware('ensure.has.magical.girl')
+            ->name('show');
+        Route::get('/edit', [MagicalGirlController::class, 'edit'])
+            ->middleware('ensure.has.magical.girl')
+            ->name('edit');
+        Route::put('/update', [MagicalGirlController::class, 'update'])->name('update');
+    });
 });

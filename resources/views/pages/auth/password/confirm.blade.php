@@ -1,28 +1,3 @@
-<?php
-
-use function Laravel\Folio\name;
-use Livewire\Volt\Component;
-use Livewire\Attributes\Validate;
-
-name('password.confirm');
-
-new class extends Component
-{
-    #[Validate('required|current_password')]
-    public $password = '';
-
-    public function confirm()
-    {
-        $this->validate();
-
-        session()->put('auth.password_confirmed_at', time());
-
-        return redirect()->intended('/');
-    }
-};
-
-?>
-
 <x-layouts.main>
     <div class="flex flex-col items-stretch justify-center w-screen min-h-screen py-10 sm:items-center">
 
@@ -41,17 +16,8 @@ new class extends Component
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="px-10 py-0 sm:py-8 sm:shadow-sm sm:bg-white dark:sm:bg-gray-950/50 dark:border-gray-200/10 sm:border sm:rounded-lg border-gray-200/60">
-                @volt('auth.password.confirm')
-                <form wire:submit="confirm" class="space-y-6">
-                    <x-ui.input label="Password" type="password" id="password" name="password" wire:model="password" />
-                    <div class="flex items-center justify-end text-sm">
-                        <x-ui.text-link href="{{ route('password.request') }}">Forgot your password?</x-ui.text-link>
-                    </div>
-                    <x-ui.button type="primary" rounded="md" submit="true">Confirm password</x-ui.button>
-                </form>
-                @endvolt
+                <livewire:auth.password-confirm />
             </div>
         </div>
     </div>
-
 </x-layouts.main>

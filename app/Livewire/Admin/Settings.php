@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Livewire\Admin;
 
 use Livewire\Component;
@@ -90,49 +89,6 @@ class Settings extends Component
 
     public function render()
     {
-        return view('livewire.admin.settings', [
-            'recentUsers' => $this->getRecentUsers(),
-            'recentActivity' => $this->getRecentActivity()
-        ]);
-    }
-
-    public function getRecentUsers()
-    {
-        // Get 5 most recent users
-        if (env('USE_DUMMY_DATA', true)) {
-            return [
-                ['id' => 1, 'name' => 'Sarah Johnson', 'email' => 'sarah.j@example.com', 'time' => '5 mins ago'],
-                ['id' => 2, 'name' => 'Michael Chen', 'email' => 'mchen@example.com', 'time' => '20 mins ago'],
-                ['id' => 3, 'name' => 'Olivia Smith', 'email' => 'olivia.smith@example.com', 'time' => '1 hour ago'],
-                ['id' => 4, 'name' => 'James Wilson', 'email' => 'jwilson@example.com', 'time' => '3 hours ago'],
-                ['id' => 5, 'name' => 'Emma Garcia', 'email' => 'egarcia@example.com', 'time' => '5 hours ago'],
-            ];
-        }
-        
-        return \App\Models\User::latest()
-            ->take(5)
-            ->get()
-            ->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'time' => $user->created_at->diffForHumans()
-                ];
-            })
-            ->toArray();
-    }
-    
-    public function getRecentActivity()
-    {
-        // In a real application, this would query a recent activity log
-        // This is dummy data for demonstration
-        return [
-            ['id' => 1, 'type' => 'login', 'user' => 'Sarah Johnson', 'time' => '5 mins ago'],
-            ['id' => 2, 'type' => 'register', 'user' => 'Raj Patel', 'time' => '10 mins ago'],
-            ['id' => 3, 'type' => 'update', 'user' => 'Michael Chen', 'time' => '20 mins ago'],
-            ['id' => 4, 'type' => 'login', 'user' => 'Emma Garcia', 'time' => '30 mins ago'],
-            ['id' => 5, 'type' => 'content', 'user' => 'Admin', 'time' => '1 hour ago', 'description' => 'Updated rules page'],
-        ];
+        return view('livewire.admin.settings');
     }
 }

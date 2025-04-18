@@ -1,38 +1,3 @@
-{{-- resources/views/pages/auth/password/request.blade.php --}}
-<?php
-
-use function Laravel\Folio\{middleware, name};
-use Livewire\Volt\Component;
-use Livewire\Attributes\Validate;
-
-name('password.request');
-middleware(['guest']);
-
-new class extends Component
-{
-    #[Validate('required|email')]
-    public $email = '';
-
-    public function sendResetLink()
-    {
-        $this->validate();
-
-        $status = \Illuminate\Support\Facades\Password::sendResetLink(
-            ['email' => $this->email]
-        );
-
-        if ($status == \Illuminate\Support\Facades\Password::RESET_LINK_SENT) {
-            $this->dispatch('toast', message: 'Password reset link sent', data: ['type' => 'success', 'position' => 'top-right']);
-            $this->reset('email');
-            return;
-        }
-
-        $this->addError('email', trans($status));
-    }
-};
-
-?>
-
 <x-layouts.magical-ocean>
     <div 
         x-data="{ loaded: false }" 

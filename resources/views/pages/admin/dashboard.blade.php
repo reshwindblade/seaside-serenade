@@ -12,5 +12,5 @@
         </div>
     </x-slot>
 
-    @livewire('admin.dashboard-stats')
+    <livewire:admin.dashboard-stats />
 </x-layouts.admin>
