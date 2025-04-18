@@ -1,18 +1,4 @@
 {{-- resources/views/pages/registration/thankyou.blade.php --}}
-<?php
-
-use function Laravel\Folio\{middleware, name};
-use Livewire\Volt\Component;
-
-name('registration.thankyou');
-middleware(['auth']);
-
-new class extends Component
-{
-};
-
-?>
-
 <x-layouts.magical-ocean>
     <div 
         x-data="{ loaded: false }" 
@@ -21,7 +7,7 @@ new class extends Component
     >
         {{-- Background decorative elements --}}
         <div class="absolute inset-0 z-0 overflow-hidden">
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-500/10 dark:bg-blue-500/5 blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-500/10 dark:bg-blue-500/5 blur-3xl transform -translate-x-1/2"></div>
             <div class="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-purple-500/10 dark:bg-purple-500/5 blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
             
             {{-- Animated confetti particles --}}

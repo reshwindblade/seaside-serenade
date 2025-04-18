@@ -1,3 +1,4 @@
+{{-- resources/views/pages/auth/register.blade.php --}}
 <x-layouts.magical-ocean>
     <div 
         x-data="{ loaded: false, step: 1 }" 
@@ -62,85 +63,9 @@
                     <div class="h-3 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
                     
                     <!-- Registration Form -->
-                    @volt('auth.register')
                     <div class="p-8">
-                        <form wire:submit="register" class="space-y-6">
-                            <!-- Multi-step form navigation -->
-                            <div class="relative mb-8">
-                                <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                                    <div class="w-full border-t border-blue-200 dark:border-blue-800"></div>
-                                </div>
-                                <div class="relative flex justify-center">
-                                    <span 
-                                        @click="step = 1" 
-                                        :class="{ 'bg-blue-600 dark:bg-blue-500 text-white': step === 1, 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 cursor-pointer': step !== 1 }"
-                                        class="relative z-10 flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors duration-300"
-                                    >
-                                        1
-                                    </span>
-                                    <div :class="{ 'border-blue-600 dark:border-blue-500': step > 1, 'border-blue-200 dark:border-blue-800': step <= 1 }" class="relative z-0 w-12 border-t transition-colors duration-300"></div>
-                                    <span 
-                                        @click="step > 1 ? step = 2 : null" 
-                                        :class="{ 'bg-blue-600 dark:bg-blue-500 text-white': step === 2, 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 cursor-pointer': step > 1, 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500': step < 2 }"
-                                        class="relative z-10 flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-colors duration-300"
-                                    >
-                                        2
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <!-- Step 1: Personal Information -->
-                            <div x-show="step === 1" class="space-y-6">
-                                <!-- Name Field -->
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
-                                        Full Name
-                                    </label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                        <input 
-                                            wire:model="name" 
-                                            id="name" 
-                                            name="name" 
-                                            type="text" 
-                                            required 
-                                            placeholder="John Doe"
-                                            class="block w-full pl-10 pr-3 py-3 border border-blue-200 dark:border-blue-800 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 bg-blue-50/50 dark:bg-blue-900/20 text-blue-900 dark:text-blue-100 placeholder-blue-400/70 dark:placeholder-blue-500/70 transition-colors duration-200"
-                                        >
-                                    </div>
-                                    @error('name')
-                                        <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                
-                                <!-- Navigation Buttons -->
-                                <div class="flex space-x-4">
-                                    <button 
-                                        type="button" 
-                                        @click="step = 1"
-                                        class="w-full flex justify-center py-3 px-4 border border-blue-300 dark:border-blue-700 rounded-xl font-medium text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-800/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-all duration-300"
-                                    >
-                                        Back
-                                    </button>
-                                    
-                                    <button 
-                                        type="submit" 
-                                        class="relative overflow-hidden group w-full flex justify-center py-3 px-4 border border-transparent rounded-xl font-medium text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-blue-700/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-all duration-300 hover:scale-[1.02]"
-                                    >
-                                        <span class="relative z-10">Register</span>
-                                        <span class="absolute inset-0 overflow-hidden rounded-xl">
-                                            <span class="absolute -left-10 w-20 h-full bg-white/20 transform -skew-x-12 transition-all duration-1000 ease-out group-hover:translate-x-80"></span>
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        @livewire('auth.register')
                     </div>
-                    @endvolt
                     
                     <!-- Visual element: bubbles decoration -->
                     <div aria-hidden="true" class="absolute top-20 right-6 w-6 h-6 rounded-full bg-blue-400/30 dark:bg-blue-400/20 floating"></div>
@@ -164,4 +89,4 @@
             </div>
         </div>
     </div>
-</x-layouts.magical-ocean>          
+</x-layouts.magical-ocean>
