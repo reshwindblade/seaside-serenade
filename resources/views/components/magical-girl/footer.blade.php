@@ -1,6 +1,3 @@
-<?php
-// resources/views/components/magical-girl/footer.blade.php
-?>
 <footer class="bg-white/80 dark:bg-purple-900/50 backdrop-blur-sm border-t border-pink-100 dark:border-purple-800/30 mt-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="py-8">

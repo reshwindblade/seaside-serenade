@@ -1,6 +1,3 @@
-<?php
-// resources/views/components/magical-girl/header.blade.php
-?>
 <header x-data="{ mobileMenuOpen: false }" class="bg-white/80 dark:bg-purple-900/50 backdrop-blur-sm border-b border-pink-100 dark:border-purple-800/30 sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">

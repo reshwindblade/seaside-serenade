@@ -24,7 +24,7 @@
             }
         </script>
 
-        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/magical-ocean.css'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/magical-girl.css'])
     </head>
     <body class="font-sans antialiased min-h-screen bg-gradient-to-br from-blue-50 to-white dark:from-gray-950 dark:to-blue-950 dark:text-white">
         <div class="min-h-screen flex flex-col">
