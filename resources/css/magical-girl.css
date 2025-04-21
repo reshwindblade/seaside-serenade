@@ -1,228 +1,242 @@
-/* resources/css/magical-ocean.css */
+/*====================================================================
+  Magical‑Twilight‑Ocean.css
+  ------------------------------------------------------------------
+  A merged stylesheet that fuses **Magical Ocean** and **Twilight of
+  Wings**.  
+  – Place this single file in your build pipeline (e.g. `app.css`).  
+  – **Cascade order:** everything from Magical Ocean first, Twilight
+    of Wings second → Twilight rules win on conflicts as requested.
+  – Identical keyframes/utility classes have been consolidated.  
+====================================================================*/
 
-/* Base colors and variables */
+/*====================================================================
+  1.  Root‑level Custom Properties
+====================================================================*/
+/* --- Magical Ocean variables (base) ------------------------------ */
 :root {
-    --ocean-primary: #1a91ff;
-    --ocean-secondary: #5643fd;
-    --ocean-accent: #00e2c3;
-    --magical-pink: #ff5995;
-    --magical-purple: #b54aff;
-    --light-bg: #f0f9ff;
-    --dark-bg: #091b29;
+  /* Ocean palette */
+  --ocean-primary: #1a91ff;
+  --ocean-secondary: #5643fd;
+  --ocean-accent:   #00e2c3;
+  /* Magical accents */
+  --magical-pink:   #ff5995;
+  --magical-purple: #b54aff;
+  /* Generic backgrounds for ocean pages */
+  --light-bg: #f0f9ff;
+  --dark-bg:  #091b29;
+  /* Core palette */
+  --twilight-bg:    #e9d6e2;   /* Soft lavender */
+  --light-card:     #f7efe6;
+  --dark-card:      #242834;
+  --angel-accent:   #f8c8c8;
+  --demon-accent:   #424b61;
+  /* Typography & text */
+  --text-light:     #3a3a4e;   /* Dark purple text */
+  --text-dark:      #e9e9f0;   /* Pale lavender text */
+  /* Borders & shadows */
+  --border-light:   #d3b5d3;
+  --border-dark:    #424b61;
+  --highlight:      #9085a6;
+  --shadow-light:   rgba(184,159,207,0.3);
+  --shadow-dark:    rgba(47,45,65,0.5);
 }
 
-/* Ocean-themed wave animations */
-.ocean-waves {
-    height: 80px;
-    width: 100%;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231a91ff' fill-opacity='0.1' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: repeat-x;
-    background-position: bottom;
-    background-size: 100% 100%;
-    opacity: 0.3;
-    bottom: 0;
-}
-
-.ocean-waves-2 {
-    height: 120px;
-    width: 100%;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%235643fd' fill-opacity='0.05' d='M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,218.7C672,203,768,149,864,133.3C960,117,1056,139,1152,160C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: repeat-x;
-    background-position: bottom;
-    background-size: 100% 100%;
-    opacity: 0.3;
-    bottom: 0;
-}
-
-/* Magical bubble animation */
-.magical-bubble {
-    position: absolute;
-    border-radius: 50%;
-    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
-    animation: float-up linear forwards;
-    z-index: -1;
+/*====================================================================
+  2.  Shared Keyframes & Utilities (deduplicated) 
+====================================================================*/
+@keyframes float {
+  0%   {transform: translateY(0)}
+  50%  {transform: translateY(-10px)}
+  100% {transform: translateY(0)}
 }
 
 @keyframes float-up {
-    0% {
-        transform: translateY(0) translateX(0) scale(1);
-        opacity: 0.3;
-    }
-    25% {
-        transform: translateY(-25vh) translateX(10px) scale(1.05);
-        opacity: 0.6;
-    }
-    50% {
-        transform: translateY(-50vh) translateX(-15px) scale(1.1);
-        opacity: 0.4;
-    }
-    75% {
-        transform: translateY(-75vh) translateX(10px) scale(0.9);
-        opacity: 0.2;
-    }
-    100% {
-        transform: translateY(-100vh) translateX(-5px) scale(0.8);
-        opacity: 0;
-    }
+  0%   {transform: translateY(0) translateX(0)     scale(1);   opacity:.3}
+  25%  {transform: translateY(-25vh) translateX(10px)  scale(1.05); opacity:.6}
+  50%  {transform: translateY(-50vh) translateX(-15px) scale(1.1);  opacity:.4}
+  75%  {transform: translateY(-75vh) translateX(10px)  scale(.9);  opacity:.2}
+  100% {transform: translateY(-100vh) translateX(-5px) scale(.8);  opacity:0}
 }
 
-/* Floating animation for decorative elements */
-.floating {
-    animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
-}
-
-/* Animated pulse for special content */
 @keyframes pulse {
-    0%, 100% {
-        opacity: 0.5;
-    }
-    50% {
-        opacity: 1;
-    }
+  0%,100% {opacity:.5}
+  50%     {opacity:1}
 }
 
-.animate-pulse {
-    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@keyframes sparkle {
+  0%,100% {opacity:.2; transform:scale(1)}
+  50%     {opacity:1;  transform:scale(1.5)}
 }
 
-/* Pinterest-style grid layout for content */
+@keyframes twinkle {
+  0%,100% {opacity:0}
+  50%     {opacity:.8}
+}
+
+/* Utility / helper classes --------------------------------------- */
+.floating       {animation: float 6s ease-in-out infinite}
+.animate-pulse  {animation: pulse 3s cubic-bezier(.4,0,.6,1) infinite}
+
 .pinterest-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    grid-auto-rows: minmax(200px, auto);
-    gap: 1.5rem;
+  display:grid; gap:1.5rem;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  grid-auto-rows:minmax(200px,auto);
+}
+@media(min-width:640px){.pinterest-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}}
+@media(min-width:1024px){.pinterest-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}}
+
+/*====================================================================
+  3.  Magical Ocean – Base Components
+====================================================================*/
+/* Ocean waves ----------------------------------------------------- */
+.ocean-waves {
+  height:80px;width:100%;bottom:0;opacity:.3;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%231a91ff' fill-opacity='0.1' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x bottom/100% 100%;
+}
+.ocean-waves-2 {
+  height:120px;width:100%;bottom:0;opacity:.3;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%235643fd' fill-opacity='0.05' d='M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,218.7C672,203,768,149,864,133.3C960,117,1056,139,1152,160C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x bottom/100% 100%;
 }
 
-@media (min-width: 640px) {
-    .pinterest-grid {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
+/* Bubbles --------------------------------------------------------- */
+.magical-bubble {
+  position:absolute;z-index:-1;border-radius:50%;
+  box-shadow:inset 0 0 10px rgba(255,255,255,.5),0 0 20px rgba(255,255,255,.2);
+  animation: float-up linear forwards;
 }
 
-@media (min-width: 1024px) {
-    .pinterest-grid {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    }
-}
-
-/* Special elements */
+/* Ocean‑specific cards & badge (inherits global names) ------------ */
 .badge-magical {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border-radius: 9999px;
-    background: linear-gradient(to right, var(--magical-pink), var(--magical-purple));
-    color: white;
+  display:inline-flex;align-items:center;padding:.25rem .75rem;font-size:.75rem;font-weight:600;border-radius:9999px;
+  background:linear-gradient(to right,var(--magical-pink),var(--magical-purple));color:#fff;
 }
-
 .page-title-magical {
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1.25;
-    margin-bottom: 1rem;
-    background-image: linear-gradient(135deg, var(--magical-pink), var(--magical-purple));
-    -webkit-background-clip: text;
-    color: transparent;
-    position: relative;
-}
-
-.coming-soon-text {
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1.25;
-    margin-bottom: 1rem;
-    background-image: linear-gradient(135deg, var(--magical-pink), var(--magical-purple));
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.coming-soon-banner {
-    position: relative;
-    border-radius: 1rem;
-    overflow: hidden;
-    padding: 3rem 2rem;
-    text-align: center;
-    border: 1px solid rgba(var(--magical-pink), 0.2);
-    background-color: rgba(var(--magical-pink), 0.05);
+  font-size:2.25rem;font-weight:700;line-height:1.25;margin-bottom:1rem;
+  background-image:linear-gradient(135deg,var(--magical-pink),var(--magical-purple));
+  -webkit-background-clip:text;color:transparent;position:relative;text-align:center;
 }
 
 .magical-card {
-    background-color: white;
-    border-radius: 1rem;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(var(--ocean-primary), 0.1);
+  background:#fff;border:1px solid rgba(var(--ocean-primary-rgb,26,145,255),.1);
+  border-radius:1rem;overflow:hidden;transition:.3s box-shadow, .3s transform;
+  box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06);
 }
+.magical-card:hover{transform:translateY(-5px);box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05)}
+.magical-card-header{padding:1.5rem;border-bottom:1px solid rgba(var(--ocean-primary-rgb,26,145,255),.1);background:rgba(var(--ocean-primary-rgb,26,145,255),.05)}
+.magical-card-body{padding:1.5rem}
 
-.dark .magical-card {
-    background-color: rgba(13, 22, 40, 0.7);
-    border: 1px solid rgba(var(--magical-purple), 0.2);
-}
-
-.magical-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.magical-card-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid rgba(var(--ocean-primary), 0.1);
-    background-color: rgba(var(--ocean-primary), 0.05);
-}
-
-.dark .magical-card-header {
-    border-bottom: 1px solid rgba(var(--magical-purple), 0.2);
-    background-color: rgba(var(--magical-purple), 0.1);
-}
-
-.magical-card-body {
-    padding: 1.5rem;
-}
-
-/* Back to top button */
 .back-to-top {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    height: 3rem;
-    width: 3rem;
-    background-color: var(--magical-pink);
-    color: white;
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 6px rgba(var(--magical-pink), 0.3);
-    transition: all 0.3s ease;
-    z-index: 20;
-    cursor: pointer;
+  position:fixed;bottom:2rem;right:2rem;height:3rem;width:3rem;
+  border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  background:var(--magical-pink);color:#fff;transition:.3s transform,.3s box-shadow;z-index:20;
+  box-shadow:0 4px 6px rgba(255,89,149,.3);
+}
+.back-to-top:hover{transform:translateY(-5px);box-shadow:0 6px 12px rgba(255,89,149,.4)}
+
+/* Dark‑mode tweaks (ocean) --------------------------------------- */
+.dark .ocean-waves, .dark .ocean-waves-2{opacity:.15}
+.dark .magical-card{background:rgba(13,22,40,.7);border-color:rgba(var(--magical-purple-rgb,181,74,255),.2)}
+.dark .magical-card-header{background:rgba(var(--magical-purple-rgb,181,74,255),.1);border-color:rgba(var(--magical-purple-rgb,181,74,255),.2)}
+
+/*====================================================================
+  4.  Twilight of Wings – Priority Overrides & Extras
+====================================================================*/
+/* Body backgrounds & fonts --------------------------------------- */
+body{
+  background-color:var(--twilight-bg);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%239085a6' fill-opacity='0.1' d='M11.1,44.7L20,33.9L11.1,23.1L0,33.9L11.1,44.7z M30.2,44.7L41.3,33.9L30.2,23.1L19.1,33.9L30.2,44.7z M49.3,44.7L60.4,33.9L49.3,23.1L38.2,33.9L49.3,44.7z M68.4,44.7L79.6,33.9L68.4,23.1L57.3,33.9L68.4,44.7z M87.6,44.7L98.7,33.9L87.6,23.1L76.4,33.9L87.6,44.7z M6.5,67.1L15.3,77.8L24.2,67.1L15.3,56.3L6.5,67.1z M25.6,67.1L34.4,77.8L43.3,67.1L34.4,56.3L25.6,67.1z M44.7,67.1L53.5,77.8L62.4,67.1L53.5,56.3L44.7,67.1z M63.8,67.1L72.6,77.8L81.5,67.1L72.6,56.3L63.8,67.1z M82.9,67.1L91.7,77.8L100.6,67.1L91.7,56.3L82.9,67.1z'%3E%3C/path%3E%3C/svg%3E");
+  font-family:'Quicksand','Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  color:var(--text-light);min-height:100vh;line-height:1.6;
+}
+.dark body{
+  background-color:#2d2438;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cpath fill='%23424b61' fill-opacity='0.15' d='M11.1,44.7L20,33.9L11.1,23.1L0,33.9L11.1,44.7z M30.2,44.7L41.3,33.9L30.2,23.1L19.1,33.9L30.2,44.7z M49.3,44.7L60.4,33.9L49.3,23.1L38.2,33.9L49.3,44.7z M68.4,44.7L79.6,33.9L68.4,23.1L57.3,33.9L68.4,44.7z M87.6,44.7L98.7,33.9L87.6,23.1L76.4,33.9L87.6,44.7z M6.5,67.1L15.3,77.8L24.2,67.1L15.3,56.3L6.5,67.1z M25.6,67.1L34.4,77.8L43.3,67.1L34.4,56.3L25.6,67.1z M44.7,67.1L53.5,77.8L62.4,67.1L53.5,56.3L44.7,67.1z M63.8,67.1L72.6,77.8L81.5,67.1L72.6,56.3L63.8,67.1z M82.9,67.1L91.7,77.8L100.6,67.1L91.7,56.3L82.9,67.1z'%3E%3C/path%3E%3C/svg%3E");
+  color:var(--text-dark);
 }
 
-.back-to-top:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(var(--magical-pink), 0.4);
+/* Twilight page title (overrides ocean) --------------------------- */
+.page-title-magical{
+  font-family:'Playfair Display','Times New Roman',serif;font-size:2.5rem;letter-spacing:1px;
+  background-image:linear-gradient(135deg,var(--text-light),#604e7d);text-align:center;
+}
+.dark .page-title-magical{background-image:linear-gradient(135deg,#b29ecc,#e3d0f5)}
+
+/* Magical‑Twilight cards ----------------------------------------- */
+.magical-card{
+  border-radius:16px;overflow:hidden;position:relative;transition:.3s transform,.3s box-shadow;
+  box-shadow:0 4px 15px var(--shadow-light);border:1px solid var(--border-light);
+  background-color:var(--light-card);
+}
+.magical-card:hover{box-shadow:0 10px 25px var(--shadow-light);transform:translateY(-5px)}
+.magical-card.light-aspect{background:var(--light-card);border-color:var(--border-light)}
+.magical-card.dark-aspect{background:var(--dark-card);border-color:var(--border-dark);color:var(--text-dark)}
+
+.dark .magical-card{background:rgba(36,40,52,.9);border-color:var(--border-dark);box-shadow:0 4px 15px var(--shadow-dark)}
+.dark .magical-card:hover{box-shadow:0 10px 25px var(--shadow-dark)}
+
+/* Balance gauge --------------------------------------------------- */
+.balance-gauge{height:12px;margin:20px 0;border-radius:6px;
+  background:linear-gradient(to right,var(--angel-accent),var(--demon-accent));position:relative}
+.balance-gauge::after{content:"";position:absolute;width:24px;height:24px;border-radius:50%;top:50%;left:50%;
+  transform:translate(-50%,-50%);background:#fff;border:3px solid var(--highlight);
+  box-shadow:0 0 10px rgba(144,133,166,.5)}
+
+/* Character cards ------------------------------------------------- */
+.character-card{border-radius:16px;overflow:hidden;transition:.35s transform;position:relative}
+.character-card.angel{background:var(--light-card);border:1px solid var(--border-light);color:var(--text-light)}
+.character-card.demon{background:var(--dark-card);border:1px solid var(--border-dark);color:var(--text-dark)}
+.character-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 15px 30px rgba(144,133,166,.3)}
+.character-name{font-family:'Playfair Display',serif;font-size:1.75rem;text-align:center;padding:1rem}
+.character-type{text-align:center;font-size:1.2rem;opacity:.7;letter-spacing:1px}
+
+/* Buttons --------------------------------------------------------- */
+.btn-magical{
+  display:inline-block;padding:.75rem 1.5rem;border-radius:30px;font-weight:600;cursor:pointer;border:none;
+  background-image:linear-gradient(to right,#9085a6,#604e7d);color:#fff;
+  box-shadow:0 4px 10px rgba(144,133,166,.3);transition:.3s transform,.3s box-shadow;
+}
+.btn-magical:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(144,133,166,.4)}
+.btn-magical-secondary{background:transparent;color:var(--text-light);border:2px solid var(--highlight)}
+.dark .btn-magical-secondary{color:var(--text-dark)}
+
+/* Navigation ------------------------------------------------------ */
+.nav-link-magical{position:relative;padding:.5rem 1rem;color:var(--text-light);transition:.3s}
+.nav-link-magical::after{content:"";position:absolute;left:50%;bottom:0;width:0;height:2px;transform:translateX(-50%);
+  background:linear-gradient(to right,var(--angel-accent),var(--demon-accent));transition:.3s}
+.nav-link-magical:hover::after,.nav-link-magical.active::after{width:80%}
+.nav-link-magical.active{font-weight:600}
+.dark .nav-link-magical{color:var(--text-dark)}
+
+/* Sparkle effect -------------------------------------------------- */
+.sparkle{position:relative}
+.sparkle::before,.sparkle::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);animation:sparkle 2s ease-in-out infinite}
+.sparkle::before{top:-5px;left:40%}
+.sparkle::after{bottom:-5px;right:40%;animation-delay:1s}
+
+/* Feather & wing decorations ------------------------------------- */
+.feather-decoration{position:absolute;width:40px;height:40px;opacity:.1;transform:rotate(var(--rotation,0deg));
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239085a6'%3E%3Cpath d='M20.42 4.58A5.4 5.4 0 0016.76 3c-1.3 0-2.49.45-3.44 1.22l-8.17 6.42c-1.34 1.03-2.2 2.59-2.33 4.35-.12 1.77.46 3.44 1.62 4.72a5.9 5.9 0 004.78 1.97 5.87 5.87 0 004.29-2.14l6.42-8.16A5.4 5.4 0 0021 7.24c0-1-.23-1.99-.58-2.66zM9.17 19.28a3.9 3.9 0 01-2.83 1.31c-1.05 0-2.09-.41-2.9-1.18a3.9 3.9 0 01-1.09-3.14c.08-1.17.65-2.21 1.57-2.93l8.17-6.42A3.46 3.46 0 0114.17 6h.28a3.43 3.43 0 013.33 3.33c.01.1.01.2.01.28a3.41 3.41 0 01-.92 2.32l-6.42 8.16-1.28-.81z'/%3E%3C/svg%3E") center/contain no-repeat;
 }
 
-/* Dark mode adjustments */
-.dark .ocean-waves, .dark .ocean-waves-2 {
-    opacity: 0.15;
-}
+.wing-decoration{position:absolute;width:80px;height:80px;opacity:.07;background-size:contain;background-repeat:no-repeat}
+.wing-decoration.light{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f8c8c8'%3E%3Cpath d='M17.45 5.98L19 5h-4.5v1h2.25L12 13.5 7.25 7H9.5V6H5l1.55.98L12 14.03l5.45-8.05z'/%3E%3C/svg%3E")}
+.wing-decoration.dark{transform:rotate(180deg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23424b61'%3E%3Cpath d='M17.45 5.98L19 5h-4.5v1h2.25L12 13.5 7.25 7H9.5V6H5l1.55.98L12 14.03l5.45-8.05z'/%3E%3C/svg%3E")}
 
-.dark .magical-bubble {
-    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.1);
-}
+/* Starry background ---------------------------------------------- */
+.starry-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:0;animation:twinkle 5s infinite}
+
+/* Coming Soon banner (Twilight override keeps same class name) ---- */
+.coming-soon-banner{position:relative;border:1px solid rgba(144,133,166,.2);background:rgba(144,133,166,.05);border-radius:1rem;overflow:hidden;padding:3rem 2rem;text-align:center}
+.coming-soon-text{font-size:2.25rem;font-weight:700;line-height:1.25;margin-bottom:1rem;
+  background:linear-gradient(135deg,var(--angel-accent),var(--demon-accent));-webkit-background-clip:text;color:transparent}
+
+/* Back‑to‑top override (gradient) -------------------------------- */
+.back-to-top{background:linear-gradient(135deg,var(--angel-accent),var(--demon-accent));color:var(--text-light);box-shadow:0 4px 6px rgba(144,133,166,.3)}
+.dark .back-to-top{color:var(--text-dark)}
+
+/* Dark‑mode ocean wave transparency already handled above -------- */
+
+/*====================================================================
+  End of Magical‑Twilight‑Ocean.css
+====================================================================*/
