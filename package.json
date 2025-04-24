@@ -2,8 +2,13 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "dev": "vite",
+        "dev:vite": "vite",
+        "dev:php": "php artisan serve",
+        "dev-all": "concurrently \"npm run dev:vite\" \"npm run dev:php\"",
         "build": "vite build",
-        "dev": "vite"
+        "laravel-build": "php artisan config:clear && php artisan cache:clear && php artisan route:clear && php artisan route:cache",
+        "production-build": "npm run laravel-build && npm run build"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.10",
