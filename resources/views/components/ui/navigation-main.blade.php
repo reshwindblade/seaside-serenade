@@ -46,11 +46,9 @@
                 </a>
                 
                 @auth
-                    @if(auth()->user()->hasMagicalGirl())
-                        <a href="{{ route('magical-girl.show') }}" class="text-blue-900 dark:text-blue-100 hover:text-blue-600 dark:hover:text-blue-400 py-2 transition-colors {{ request()->routeIs('magical-girl*') ? 'font-medium text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400' : '' }}">
-                            My Magical Girl
-                        </a>
-                    @endif
+                    <a href="{{ route('magical-girl.index') }}" class="nav-link-magical {{ request()->routeIs('magical-girl.*') ? 'active' : '' }}">
+                        My Magical Girls
+                    </a>
                 @endauth
             </nav>
 

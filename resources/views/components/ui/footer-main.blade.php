@@ -93,19 +93,18 @@
                                 Profile Settings
                             </a>
                         </li>
-                        @if(Auth::user()->hasMagicalGirl())
-                            <li>
-                                <a href="{{ route('magical-girl.show') }}" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                    My Magical Girl
-                                </a>
-                            </li>
-                        @else
-                            <li>
-                                <a href="{{ route('magical-girl.create') }}" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                    Create Character
-                                </a>
-                            </li>
-                        @endif
+                        @auth
+                        <li>
+                            <a href="{{ route('magical-girl.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                My Magical Girls
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('magical-girl.create') }}" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                Create New Character
+                            </a>
+                        </li>
+                        @endauth
                         <li>
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf

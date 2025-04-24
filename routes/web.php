@@ -67,16 +67,22 @@ Route::get('/powers-abilities', function () {
 
 // Magical Girl Routes
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/magical-girl/create', [MagicalGirlController::class, 'create'])
+    Route::get('/magical-girls', [MagicalGirlController::class, 'index'])
+        ->name('magical-girl.index');
+    Route::get('/magical-girls/create', [MagicalGirlController::class, 'create'])
         ->name('magical-girl.create');
-    Route::post('/magical-girl', [MagicalGirlController::class, 'store'])
+    Route::post('/magical-girls', [MagicalGirlController::class, 'store'])
         ->name('magical-girl.store');
-    Route::get('/magical-girl', [MagicalGirlController::class, 'show'])
+    Route::get('/magical-girls/{id?}', [MagicalGirlController::class, 'show'])
         ->name('magical-girl.show');
-    Route::get('/magical-girl/edit', [MagicalGirlController::class, 'edit'])
+    Route::get('/magical-girls/{id}/edit', [MagicalGirlController::class, 'edit'])
         ->name('magical-girl.edit');
-    Route::put('/magical-girl', [MagicalGirlController::class, 'update'])
+    Route::put('/magical-girls/{id}', [MagicalGirlController::class, 'update'])
         ->name('magical-girl.update');
+    Route::post('/magical-girls/{id}/set-primary', [MagicalGirlController::class, 'setPrimary'])
+        ->name('magical-girl.set-primary');
+    Route::delete('/magical-girls/{id}', [MagicalGirlController::class, 'destroy'])
+        ->name('magical-girl.destroy');
 });
 
 // Authentication Routes

@@ -11,16 +11,20 @@ use Illuminate\Support\Facades\Validator;
 class MagicalGirlController extends Controller
 {
     /**
+     * Display a listing of user's magical girls.
+     */
+    public function index()
+    {
+        $magicalGirls = Auth::user()->magicalGirls()->get();
+        
+        return view('magical-girl.index', compact('magicalGirls'));
+    }
+
+    /**
      * Display the character creation form.
      */
     public function create()
     {
-        // If user already has a character, redirect to edit
-        if (Auth::user()->hasMagicalGirl()) {
-            return redirect()->route('magical-girl.edit')
-                ->with('info', 'You already have a magical girl character.');
-        }
-        
         // Get skills organized by attribute
         $skillsByAttribute = MagicalSkill::getSkillsByAttribute();
         
@@ -35,12 +39,6 @@ class MagicalGirlController extends Controller
      */
     public function store(Request $request)
     {
-        // If user already has a character, redirect to edit
-        if (Auth::user()->hasMagicalGirl()) {
-            return redirect()->route('magical-girl.edit')
-                ->with('info', 'You already have a magical girl character.');
-        }
-        
         // Validate basic info
         $validator = Validator::make($request->all(), [
             'character_name' => 'required|string|max:255',
@@ -113,9 +111,13 @@ class MagicalGirlController extends Controller
             }
         }
         
+        // Check if this is the user's first magical girl
+        $isPrimary = !Auth::user()->hasMagicalGirl();
+        
         // Create magical girl character
         $magicalGirl = new MagicalGirl([
             'user_id' => Auth::id(),
+            'is_primary' => $isPrimary,
             'character_name' => $request->input('character_name'),
             'magical_name' => $request->input('magical_name'),
             'signature_color' => $request->input('signature_color'),
@@ -137,22 +139,32 @@ class MagicalGirlController extends Controller
         // Save the character
         $magicalGirl->save();
         
-        return redirect()->route('magical-girl.show')
+        return redirect()->route('magical-girl.index')
             ->with('success', 'Your magical girl character has been created!');
     }
     
     /**
-     * Display the user's magical girl character.
+     * Display the specified magical girl character.
      */
-    public function show()
+    public function show($id = null)
     {
-        // Check if user has a character
-        if (!Auth::user()->hasMagicalGirl()) {
-            return redirect()->route('magical-girl.create')
-                ->with('info', 'You need to create a magical girl character first.');
+        if ($id) {
+            $magicalGirl = MagicalGirl::where('user_id', Auth::id())->findOrFail($id);
+        } else {
+            // If no ID provided, show the primary magical girl (for backward compatibility)
+            $magicalGirl = Auth::user()->magicalGirls()->primary()->first();
+            
+            if (!$magicalGirl) {
+                // If no primary, get the first one
+                $magicalGirl = Auth::user()->magicalGirl;
+            }
+            
+            if (!$magicalGirl) {
+                return redirect()->route('magical-girl.create')
+                    ->with('info', 'You need to create a magical girl character first.');
+            }
         }
         
-        $magicalGirl = Auth::user()->magicalGirl;
         $skillNames = MagicalSkill::getAllSkillsArray();
         
         return view('magical-girl.show', [
@@ -162,17 +174,27 @@ class MagicalGirlController extends Controller
     }
     
     /**
-     * Display the edit form.
+     * Display the edit form for the specified magical girl.
      */
-    public function edit()
+    public function edit($id = null)
     {
-        // Check if user has a character
-        if (!Auth::user()->hasMagicalGirl()) {
-            return redirect()->route('magical-girl.create')
-                ->with('info', 'You need to create a magical girl character first.');
+        if ($id) {
+            $magicalGirl = MagicalGirl::where('user_id', Auth::id())->findOrFail($id);
+        } else {
+            // If no ID provided, edit the primary magical girl (for backward compatibility)
+            $magicalGirl = Auth::user()->magicalGirls()->primary()->first();
+            
+            if (!$magicalGirl) {
+                // If no primary, get the first one
+                $magicalGirl = Auth::user()->magicalGirl;
+            }
+            
+            if (!$magicalGirl) {
+                return redirect()->route('magical-girl.create')
+                    ->with('info', 'You need to create a magical girl character first.');
+            }
         }
         
-        $magicalGirl = Auth::user()->magicalGirl;
         $skillsByAttribute = MagicalSkill::getSkillsByAttribute();
         
         return view('magical-girl.edit', [
@@ -182,20 +204,13 @@ class MagicalGirlController extends Controller
     }
     
     /**
-     * Update the user's magical girl character.
+     * Update the specified magical girl character.
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        // Check if user has a character
-        if (!Auth::user()->hasMagicalGirl()) {
-            return redirect()->route('magical-girl.create')
-                ->with('info', 'You need to create a magical girl character first.');
-        }
+        $magicalGirl = MagicalGirl::where('user_id', Auth::id())->findOrFail($id);
         
-        $magicalGirl = Auth::user()->magicalGirl;
-        
-        // Same validation as store method (could be refactored)
-        // For brevity, we're only updating basic info and bio here
+        // Validate the request
         $validator = Validator::make($request->all(), [
             'character_name' => 'required|string|max:255',
             'magical_name' => 'required|string|max:255',
@@ -203,6 +218,7 @@ class MagicalGirlController extends Controller
             'animation_spirit' => 'required|string|max:255',
             'transformation_phrase' => 'required|string',
             'bio' => 'nullable|string',
+            'set_as_primary' => 'boolean',
         ]);
         
         if ($validator->fails()) {
@@ -219,10 +235,49 @@ class MagicalGirlController extends Controller
         $magicalGirl->transformation_phrase = $request->input('transformation_phrase');
         $magicalGirl->bio = $request->input('bio');
         
+        // If set_as_primary is checked, make this the primary character
+        if ($request->input('set_as_primary')) {
+            $magicalGirl->setAsPrimary();
+        }
+        
         // Save the changes
         $magicalGirl->save();
         
-        return redirect()->route('magical-girl.show')
+        return redirect()->route('magical-girl.show', $magicalGirl->id)
             ->with('success', 'Your magical girl character has been updated!');
+    }
+    
+    /**
+     * Set a magical girl as the primary character.
+     */
+    public function setPrimary($id)
+    {
+        $magicalGirl = MagicalGirl::where('user_id', Auth::id())->findOrFail($id);
+        $magicalGirl->setAsPrimary();
+        
+        return redirect()->route('magical-girl.index')
+            ->with('success', $magicalGirl->magical_name . ' has been set as your primary magical girl.');
+    }
+    
+    /**
+     * Remove the specified magical girl character.
+     */
+    public function destroy($id)
+    {
+        $magicalGirl = MagicalGirl::where('user_id', Auth::id())->findOrFail($id);
+        $wasPrimary = $magicalGirl->is_primary;
+        
+        $magicalGirl->delete();
+        
+        // If we deleted the primary character and there are other characters, make another one primary
+        if ($wasPrimary) {
+            $newPrimary = Auth::user()->magicalGirls()->first();
+            if ($newPrimary) {
+                $newPrimary->setAsPrimary();
+            }
+        }
+        
+        return redirect()->route('magical-girl.index')
+            ->with('success', 'Your magical girl character has been deleted.');
     }
 }

@@ -11,6 +11,7 @@ class MagicalGirl extends Model
 
     protected $fillable = [
         'user_id',
+        'is_primary',
         'character_name',
         'magical_name',
         'signature_color',
@@ -34,6 +35,7 @@ class MagicalGirl extends Model
     protected $casts = [
         'proficient_skills' => 'array',
         'mastered_skills' => 'array',
+        'is_primary' => 'boolean',
     ];
 
     /**
@@ -60,6 +62,31 @@ class MagicalGirl extends Model
         
         // Calculate Magical Defense
         $this->magical_defense = intval(($this->focus + $this->insight + $this->presence) / 3);
+        
+        return $this;
+    }
+    
+    /**
+     * Scope a query to only include primary characters.
+     */
+    public function scopePrimary($query)
+    {
+        return $query->where('is_primary', true);
+    }
+    
+    /**
+     * Set this character as the user's primary character.
+     */
+    public function setAsPrimary()
+    {
+        // First, unset any existing primary characters for this user
+        self::where('user_id', $this->user_id)
+            ->where('id', '!=', $this->id)
+            ->update(['is_primary' => false]);
+        
+        // Set this one as primary
+        $this->is_primary = true;
+        $this->save();
         
         return $this;
     }

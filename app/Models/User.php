@@ -53,18 +53,35 @@ class User extends Authenticatable
     }
     
     /**
-     * Get the magical girl character associated with the user.
+     * Get the magical girl characters associated with the user.
      */
-    public function magicalGirl()
+    public function magicalGirls()
     {
-        return $this->hasOne(MagicalGirl::class);
+        return $this->hasMany(MagicalGirl::class);
     }
     
     /**
-     * Check if the user has created a magical girl character.
+     * Get the user's primary magical girl character.
+     * This maintains compatibility with existing code.
+     */
+    public function magicalGirl()
+    {
+        return $this->hasOne(MagicalGirl::class)->orderBy('created_at', 'asc');
+    }
+    
+    /**
+     * Check if the user has created any magical girl characters.
      */
     public function hasMagicalGirl(): bool
     {
-        return $this->magicalGirl()->exists();
+        return $this->magicalGirls()->exists();
+    }
+    
+    /**
+     * Get the count of magical girls the user has created.
+     */
+    public function magicalGirlsCount(): int
+    {
+        return $this->magicalGirls()->count();
     }
 }
