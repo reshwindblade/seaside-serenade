@@ -46,9 +46,16 @@
                 </a>
                 
                 @auth
-                    <a href="{{ route('magical-girl.index') }}" class="nav-link-magical {{ request()->routeIs('magical-girl.*') ? 'active' : '' }}">
-                        My Magical Girls
-                    </a>
+                    <li>
+                        <a href="{{ route('magical-girl.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            My Magical Girls
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('magical-girl.create') }}" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            Create New Character
+                        </a>
+                    </li>
                 @endauth
             </nav>
 

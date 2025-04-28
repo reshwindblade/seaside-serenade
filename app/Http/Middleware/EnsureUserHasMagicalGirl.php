@@ -19,7 +19,7 @@ class EnsureUserHasMagicalGirl
     {
         if (auth()->check() && !auth()->user()->hasMagicalGirl()) {
             return redirect()->route('magical-girl.create')
-                ->with('info', 'Please create your magical girl character first.');
+                ->with('info', 'Please create a magical girl character first.');
         }
 
         return $next($request);
