@@ -1,4 +1,6 @@
 <x-layouts.magical-ocean>
+    <x-alerts.status />
+    
     <!-- Hero Section -->
     <section class="relative pt-20 pb-24 overflow-hidden">
         <div class="absolute inset-0 z-0">
@@ -38,44 +40,56 @@
                         
                         @auth
                             @if(auth()->user()->hasMagicalGirl())
-                                <a href="{{ route('magical-girl.show') }}" 
-                                   class="relative overflow-hidden group inline-flex items-center px-8 py-3 font-medium text-base rounded-xl text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-blue-700/30 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 w-full sm:w-auto justify-center">
-                                    <span class="relative z-10">View Your Magical Girl</span>
-                                    <span class="absolute inset-0 overflow-hidden rounded-xl">
-                                        <span class="absolute -left-10 w-20 h-full bg-white/20 transform -skew-x-12 transition-all duration-1000 ease-out group-hover:translate-x-60"></span>
-                                    </span>
-                                </a>
-                                <a href="{{ route('rules') }}" 
-                                   class="inline-flex items-center px-8 py-3 font-medium text-base rounded-xl text-blue-600 dark:text-blue-300 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 border border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 w-full sm:w-auto justify-center">
+                                <x-ui.button 
+                                    href="{{ route('magical-girl.show') }}"
+                                    color="primary"
+                                    size="lg"
+                                    class="w-full sm:w-auto justify-center">
+                                    View Your Magical Girl
+                                </x-ui.button>
+                                
+                                <x-ui.button 
+                                    href="{{ route('rules') }}"
+                                    color="secondary"
+                                    size="lg"
+                                    class="w-full sm:w-auto justify-center">
                                     Explore Game Rules
-                                </a>
+                                </x-ui.button>
                             @else
-                                <a href="{{ route('magical-girl.create') }}" 
-                                   class="relative overflow-hidden group inline-flex items-center px-8 py-3 font-medium text-base rounded-xl text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-blue-700/30 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 w-full sm:w-auto justify-center">
-                                    <span class="relative z-10">Create Your Magical Girl</span>
-                                    <span class="absolute inset-0 overflow-hidden rounded-xl">
-                                        <span class="absolute -left-10 w-20 h-full bg-white/20 transform -skew-x-12 transition-all duration-1000 ease-out group-hover:translate-x-60"></span>
-                                    </span>
-                                </a>
-                                <a href="{{ route('rules') }}" 
-                                   class="inline-flex items-center px-8 py-3 font-medium text-base rounded-xl text-blue-600 dark:text-blue-300 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 border border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 w-full sm:w-auto justify-center">
+                                <x-ui.button 
+                                    href="{{ route('magical-girl.create') }}"
+                                    color="primary"
+                                    size="lg"
+                                    class="w-full sm:w-auto justify-center">
+                                    Create Your Magical Girl
+                                </x-ui.button>
+                                
+                                <x-ui.button 
+                                    href="{{ route('rules') }}"
+                                    color="secondary"
+                                    size="lg"
+                                    class="w-full sm:w-auto justify-center">
                                     Read the Rules First
-                                </a>
+                                </x-ui.button>
                             @endif
                         @else
                             @if(!config('app.disable_registration'))
-                                <a href="{{ route('register') }}" 
-                                   class="relative overflow-hidden group inline-flex items-center px-8 py-3 font-medium text-base rounded-xl text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:shadow-lg hover:shadow-blue-500/20 dark:hover:shadow-blue-700/30 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 w-full sm:w-auto justify-center">
-                                    <span class="relative z-10">Join the Adventure</span>
-                                    <span class="absolute inset-0 overflow-hidden rounded-xl">
-                                        <span class="absolute -left-10 w-20 h-full bg-white/20 transform -skew-x-12 transition-all duration-1000 ease-out group-hover:translate-x-60"></span>
-                                    </span>
-                                </a>
+                                <x-ui.button 
+                                    href="{{ route('register') }}"
+                                    color="primary"
+                                    size="lg"
+                                    class="w-full sm:w-auto justify-center">
+                                    Join the Adventure
+                                </x-ui.button>
                             @endif
-                            <a href="{{ route('login') }}" 
-                               class="inline-flex items-center px-8 py-3 font-medium text-base rounded-xl text-blue-600 dark:text-blue-300 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 border border-blue-200 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 w-full sm:w-auto justify-center">
+                            
+                            <x-ui.button 
+                                href="{{ route('login') }}"
+                                color="secondary"
+                                size="lg"
+                                class="w-full sm:w-auto justify-center">
                                 Sign In
-                            </a>
+                            </x-ui.button>
                         @endauth
                     </div>
                 </div>
@@ -105,15 +119,21 @@
     <!-- Features Section -->
     <section class="py-16 relative overflow-hidden bg-blue-50 dark:bg-blue-900/20">
         <div class="container px-6 mx-auto max-w-6xl">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">Explore the Magical Ocean World</h2>
-                <p class="text-blue-900/70 dark:text-blue-100/70 max-w-2xl mx-auto">Dive into our features and discover the magical ocean universe!</p>
-            </div>
+            <x-partials.page-header
+                title="Explore the Magical Ocean World"
+                description="Dive into our features and discover the magical ocean universe!"
+            />
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Card 1: Rules -->
-                <a href="{{ route('rules') }}" class="bg-white dark:bg-gray-800 rounded-xl border border-blue-100 dark:border-blue-800/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
-                    <div class="h-3 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+                <!-- Rules Card -->
+                <x-cards.magical-card 
+                    href="{{ route('rules') }}"
+                    color="blue"
+                    hover="true">
+                    <x-slot:header>
+                        <div class="h-3 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+                    </x-slot>
+                    
                     <div class="p-6">
                         <div class="w-14 h-14 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4 group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -129,11 +149,17 @@
                             </svg>
                         </div>
                     </div>
-                </a>
+                </x-cards.magical-card>
                 
-                <!-- Card 2: Characters -->
-                <a href="{{ route('characters') }}" class="bg-white dark:bg-gray-800 rounded-xl border border-blue-100 dark:border-blue-800/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
-                    <div class="h-3 bg-gradient-to-r from-purple-500 to-purple-600"></div>
+                <!-- Characters Card -->
+                <x-cards.magical-card 
+                    href="{{ route('characters') }}"
+                    color="purple"
+                    hover="true">
+                    <x-slot:header>
+                        <div class="h-3 bg-gradient-to-r from-purple-500 to-purple-600"></div>
+                    </x-slot>
+                    
                     <div class="p-6">
                         <div class="w-14 h-14 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mb-4 group-hover:bg-purple-200 dark:group-hover:bg-purple-800/50 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -149,11 +175,17 @@
                             </svg>
                         </div>
                     </div>
-                </a>
+                </x-cards.magical-card>
                 
-                <!-- Card 3: NPCs -->
-                <a href="{{ route('npcs') }}" class="bg-white dark:bg-gray-800 rounded-xl border border-blue-100 dark:border-blue-800/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
-                    <div class="h-3 bg-gradient-to-r from-pink-500 to-pink-600"></div>
+                <!-- NPCs Card -->
+                <x-cards.magical-card 
+                    href="{{ route('npcs') }}"
+                    color="pink"
+                    hover="true">
+                    <x-slot:header>
+                        <div class="h-3 bg-gradient-to-r from-pink-500 to-pink-600"></div>
+                    </x-slot>
+                    
                     <div class="p-6">
                         <div class="w-14 h-14 rounded-lg bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center mb-4 group-hover:bg-pink-200 dark:group-hover:bg-pink-800/50 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-pink-600 dark:text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -169,13 +201,19 @@
                             </svg>
                         </div>
                     </div>
-                </a>
+                </x-cards.magical-card>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 mt-8 gap-8">
-                <!-- Card 4: World Setting -->
-                <a href="{{ route('world') }}" class="bg-white dark:bg-gray-800 rounded-xl border border-blue-100 dark:border-blue-800/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
-                    <div class="h-3 bg-gradient-to-r from-green-500 to-emerald-600"></div>
+                <!-- World Setting Card -->
+                <x-cards.magical-card 
+                    href="{{ route('world') }}"
+                    color="green"
+                    hover="true">
+                    <x-slot:header>
+                        <div class="h-3 bg-gradient-to-r from-green-500 to-emerald-600"></div>
+                    </x-slot>
+                    
                     <div class="p-6">
                         <div class="w-14 h-14 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-4 group-hover:bg-green-200 dark:group-hover:bg-green-800/50 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -191,27 +229,33 @@
                             </svg>
                         </div>
                     </div>
-                </a>
+                </x-cards.magical-card>
                 
-                <!-- Card 5: Powers -->
-                <a href="{{ route('powers') }}" class="bg-white dark:bg-gray-800 rounded-xl border border-blue-100 dark:border-blue-800/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden group">
-                    <div class="h-3 bg-gradient-to-r from-amber-500 to-red-600"></div>
+                <!-- Powers Card -->
+                <x-cards.magical-card 
+                    href="{{ route('powers') }}"
+                    color="amber"
+                    hover="true">
+                    <x-slot:header>
+                        <div class="h-3 bg-gradient-to-r from-amber-500 to-red-600"></div>
+                    </x-slot>
+                    
                     <div class="p-6">
                         <div class="w-14 h-14 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-4 group-hover:bg-amber-200 dark:group-hover:bg-amber-800/50 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                         </div>
-                        <h3 class="text-xl font-semibold mb-2 text-amber-700 dark:text-amber-300">Powers & Abilities</h3>
-                        <p class="text-blue-900/70 dark:text-blue-100/70 mb-4">Discover the magical powers, transformations, and special abilities available in our world.</p>
+                        <h3 class="text-xl font-semibold mb-2 text-amber-700 dark:text-amber-300">Magical Powers</h3>
+                        <p class="text-blue-900/70 dark:text-blue-100/70 mb-4">Discover the various magical abilities and powers available to your character.</p>
                         <div class="flex items-center text-amber-600 dark:text-amber-400 font-medium group-hover:translate-x-1 transition-transform">
-                            Discover Powers
+                            Explore Powers
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                             </svg>
                         </div>
                     </div>
-                </a>
+                </x-cards.magical-card>
             </div>
         </div>
     </section>
